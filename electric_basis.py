@@ -3,7 +3,11 @@
 import numpy as np
 import sympy as sp
 
-from DJT_matrix import *
+try:
+    from .DJT_matrix import *
+except:
+    from DJT_matrix import *
+
 
 from eb_left_generators import get_La, get_Lsquared, get_Lplus, get_Lminus
 from eb_right_generators import get_Ra, get_Rsquared, get_Rplus, get_Rminus

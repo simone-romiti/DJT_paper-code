@@ -8,7 +8,7 @@ import operators
 N_c = operators.N_c
 N_g = operators.N_g
 
-q = 1
+q = 3/2
 print("q =", q)
 DJT = get_DJT(q)
 DJT_dag = np.conj(DJT).T

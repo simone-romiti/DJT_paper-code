@@ -2,7 +2,10 @@
 import sympy as sp
 import numpy as np
 
-import partition
+try:
+    from . import partition
+except:
+    import partition
 
 
 def check_su2_irrep(j, mL, mR):
