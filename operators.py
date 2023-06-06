@@ -13,6 +13,13 @@ import indices
 N_c = 2 # number of colors
 N_g = int(N_c*N_c - 1) # number of generators of the Lie algebra
 
+# Pauli matrices divided my 2
+sigma_1 = np.array([[0, 1], [1, 0]])
+sigma_2 = np.array([[0, -1j], [+1j, 0]])
+sigma_3 = np.array([[1, 0], [0, -1]])
+
+tau = {1: sigma_1/2.0, 2: sigma_2/2.0, 3: sigma_3/2.0}
+
 # V*\hat{L}_a * V^{-1}, where the \hat{L}_a are the momenta in the electric basis
 # V is the DJT, and V^{-1} is DJT^{\dagger}*W
 def get_La(a, q, V, V_inv):
@@ -48,10 +55,11 @@ def get_U(q):
     U_22 = np.zeros(shape = (N_alpha, N_alpha), dtype=complex)
     for i in range(N_alpha):
         i_theta, i_psi, i_phi = indices.S3_point_to_angles_index(i, q)
-        U_11[i, i] = WignerD(sp.Rational(1/2), sp.Rational(1/2) , sp.Rational(1/2), phi[i_phi], theta[i_theta], psi[i_psi]).doit()
-        U_12[i, i] = WignerD(sp.Rational(1/2), sp.Rational(1/2) , sp.Rational(-1/2), phi[i_phi], theta[i_theta], psi[i_psi]).doit()
-        U_21[i, i] = WignerD(sp.Rational(1/2), sp.Rational(-1/2) , sp.Rational(1/2), phi[i_phi], theta[i_theta], psi[i_psi]).doit()
-        U_22[i, i] = WignerD(sp.Rational(1/2), sp.Rational(-1/2) , sp.Rational(-1/2), phi[i_phi], theta[i_theta], psi[i_psi]).doit()
+        onehalf = sp.Rational(1/2)
+        U_11[i, i] = WignerD(onehalf, +onehalf , +onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit()
+        U_12[i, i] = WignerD(onehalf, -onehalf , +onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit()
+        U_21[i, i] = WignerD(onehalf, +onehalf , -onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit()
+        U_22[i, i] = WignerD(onehalf, -onehalf , -onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit()
     ####
     return [[U_11, U_12], [U_21, U_22]]
 ####

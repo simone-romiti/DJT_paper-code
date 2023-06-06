@@ -1,5 +1,5 @@
 import sympy as sp
-from sympy.physics.matrices import msigma
+##from sympy.physics.matrices import msigma
 
 import partition
 from DJT_matrix import *
@@ -8,12 +8,15 @@ import operators
 N_c = operators.N_c
 N_g = operators.N_g
 
-q = 3/2
+q = 1
 print("q =", q)
 DJT = get_DJT(q)
 DJT_dag = np.conj(DJT).T
+V = get_V(DJT=DJT, q=q)
+V_inv = get_V_inv(DJT=DJT, q=q)
+
 U = operators.get_U(q = q)
-L3 = operators.get_La(a=3, q=q, V=DJT, V_inv=DJT_dag)
+La = [operators.get_La(a=a, q=q, V=V, V_inv=V_inv) for a in [1, 2, 3]]
 N_alpha = partition.get_N_alpha(q)
 
 q_max = q - 1/2 # only states with j up to (q - 1/2) satisfy the commutation relations
@@ -32,23 +35,25 @@ for j1 in [q_max - j_i/2 for j_i in range(0, int(2*q_max) + 1)]:
             print("(j, m, mu)=", sp.Rational(j1), sp.Rational(m1), sp.Rational(mu1))
             #
             v = get_eigenstate(j1, m1, mu1, q=q)
-            for a in range(N_c):
-                for b in range(N_c):
-                    U_ab = operators.get_U_ab(U, a, b)
-                    comm_ab = np.dot(L3, U_ab) - np.dot(U_ab, L3)
-                    LHS = np.dot(comm_ab,v)
-                    RHS = np.zeros(shape=(N_alpha, 1), dtype=complex)
-                    for c in range(N_c):
-                        tau3_ac = complex((msigma(3)[a,c]).evalf())/2.0
-                        U_cb = operators.get_U_ab(U, c, b)
-                        RHS = RHS + np.dot(tau3_ac*U_cb, v)
+            for g in range(N_g):
+                Lg = La[g]
+                tau_g = operators.tau[g+1]
+                for a in range(N_c):
+                    for b in range(N_c):
+                        U_ab = operators.get_U_ab(U, a, b)
+                        comm_ab = np.dot(Lg, U_ab) - np.dot(U_ab, Lg)
+                        LHS = np.dot(comm_ab,v)
+                        RHS = np.zeros(shape=(N_alpha, 1), dtype=complex)
+                        for c in range(N_c):
+                            u_comp = operators.get_U_ab(U, a, c)
+                            RHS = RHS + np.dot(u_comp*tau_g[c,b], v) # eq. 4.3a of https://journals.aps.org/prd/pdf/10.1103/PhysRevD.11.395
+                        ####
+                        msg = "(a,b)=({a}, {b}): |[L_{g},U_ab]*v - \\sum_c \\tau^{g}_ac U_cb v|^2 = ".format(a=a, b=b, g=g+1)
+                        diff = (LHS - RHS).round(decimals=decimals)
+                        print(msg, get_norm2(diff))
                     ####
-                    msg = "(a,b)=({a}, {b}): |[L_3,U_ab]*v - \\tau^3_ac U_cb v|^2 = ".format(a=a, b=b)
-                    diff = (LHS - RHS).round(decimals=decimals)
-                    print(msg, get_norm2(diff))
                 ####
-            ####
-            print("")
+                print("")
         ####
     ####
 ####
