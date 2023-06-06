@@ -3,7 +3,11 @@
 import numpy as np
 import sympy as sp
 
-from DJT_matrix import *
+try:
+    from .DJT_matrix import *
+except:
+    from DJT_matrix import *
+
 
 # \sum_a L_a*L_a
 def get_Lsquared(q):
