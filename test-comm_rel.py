@@ -57,12 +57,12 @@ for j1 in [q_max - j_i/2 for j_i in range(0, int(2*q_max) + 1)]:
               RHS1 = RHS1 + np.dot(-tau_g[a,c]*operators.get_U_ab(U, c, b), v)
               RHS2 = RHS2 + np.dot(operators.get_U_ab(U_dag, a, c)*tau_g[c,b], v)
             ##
-            msg1 = "(a,b)=({a}, {b}): |[L_{g},U_ab]*v - \\sum_c (- \\tau^{g})_ac U_cb v|^2 = ".format(a=a, b=b, g=g+1) + 4*" "
+            msg1 = "(a,b)=({a}, {b}): |[L_{g},U_ab]*v - \\sum_c (- \\tau^{g})_ac U_cb v|^2 = ".format(a=a, b=b, g=g+1)
             diff1 = (LHS1 - RHS1).round(decimals=decimals)
-            ###print(msg1, get_norm2(diff1))
+            print(msg1 + 15*" ", get_norm2(diff1))
             msg2 = "(a,b)=({a}, {b}): |[L_{g},U^\dagger_ab]*v - \\sum_c U^\dagger_ac \\tau^{g}_cb v|^2 = ".format(a=a, b=b, g=g+1)
             diff2 = (LHS2 - RHS2).round(decimals=decimals)
-            ###print(msg2, get_norm2(diff2))
+            print(msg2 + 3*" ", get_norm2(diff2))
             #
             # [Rg, U] commutator
             comm3_ab = np.dot(Rg, U_ab) - np.dot(U_ab, Rg)
@@ -72,14 +72,13 @@ for j1 in [q_max - j_i/2 for j_i in range(0, int(2*q_max) + 1)]:
             RHS3 = np.zeros(shape=(N_alpha,), dtype=complex)
             RHS4 = np.zeros(shape=(N_alpha,), dtype=complex)
             for c in range(N_c):
-#              RHS3 = RHS3 + np.dot(operators.get_U_ab(U_dag, a, c)*tau_g[c,b], v)
-              RHS3 = RHS3 + np.dot(-operators.get_U_ab(U,a,c)*tau_g[b,c], v)
-              RHS4 = RHS4 + np.dot(tau_g[c,a]*operators.get_U_ab(U_dag, c, b), v)
+              RHS3 = RHS3 + np.dot(operators.get_U_ab(U,a,c)*tau_g[c,b], v)
+              RHS4 = RHS4 + np.dot(-tau_g[a,c]*operators.get_U_ab(U_dag, c, b), v)
             ##
-            msg3 = "(a,b)=({a}, {b}): |[R_{g},U_ab]*v - \\sum_c (- \\tau^{g})_ac U_cb v|^2 = ".format(a=a, b=b, g=g+1) + 4*" "
+            msg3 = "(a,b)=({a}, {b}): |[R_{g},U_ab]*v - \\sum_c U_ac \\tau^{g}_bc v|^2 =".format(a=a, b=b, g=g+1)
             diff3 = (LHS3 - RHS3).round(decimals=decimals)
-            print(msg3, get_norm2(diff3))
-            msg4 = "(a,b)=({a}, {b}): |[R_{g},U^\dagger_ab]*v - \\sum_c U^\dagger_ac \\tau^{g}_cb v|^2 = ".format(a=a, b=b, g=g+1)
+            print(msg3 + 20*" ", get_norm2(diff3))
+            msg4 = "(a,b)=({a}, {b}): |[R_{g},U^\\dagger_ab]*v - \\sum_c (- \\tau^{g})_ca U^\\dagger_cb v|^2 =".format(a=a, b=b, g=g+1)
             diff4 = (LHS4 - RHS4).round(decimals=decimals)
             print(msg4, get_norm2(diff4))
           ####

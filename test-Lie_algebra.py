@@ -13,7 +13,7 @@ tau = operators.tau
 N_c = operators.N_c
 N_g = operators.N_g
 
-q = 3/2
+q = 1
 print("q =", q)
 
 decimals = 14

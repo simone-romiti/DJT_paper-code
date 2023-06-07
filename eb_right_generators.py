@@ -20,7 +20,7 @@ def get_R3(q):
     R3 = np.zeros(shape = (N_q, N_q))
     for i in range(N_q):
         j, mL, mR = su2_index_to_irrep(i, q)
-        R3[i,i] = mR
+        R3[i,i] = -mR
     ####
     return R3
 ####
@@ -36,7 +36,7 @@ def get_Rplus(q):
             Rplus[i2, i] = np.sqrt(float(j*(j+1) - mR*(mR+1)))
         ####
     ####
-    return Rplus
+    return -Rplus.T
 ####
 
 
