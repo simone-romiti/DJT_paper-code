@@ -33,7 +33,6 @@ def get_La(a, q, V, V_inv):
     La_eb = eb.get_La(a=a, q=q)
     La = np.dot(V, np.dot(La_eb, V_inv))
     return La
-    ####
 ####
 
 # \sum_a L_a*L_a. Same logic as for get_La()

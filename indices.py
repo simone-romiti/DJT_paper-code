@@ -45,7 +45,7 @@ def su2_irrep_to_index(j, mL, mR, q):
     i0 = N_q - k0
     deg_j = int(2*j) + 1
     i1 = deg_j*(j - mL) + (j - mR)
-    return i0+i1
+    return int(i0+i1)
 ####
 
 # i = i_theta*N_phi*N_psi + i_phi*N_psi + i_psi
