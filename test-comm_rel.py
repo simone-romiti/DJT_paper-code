@@ -8,7 +8,7 @@ import operators
 N_c = operators.N_c
 N_g = operators.N_g
 
-q = 3/2
+q = 1
 print("q =", q)
 DJT = get_DJT(q)
 DJT_dag = np.conj(DJT).T
@@ -16,7 +16,9 @@ V = get_V(DJT=DJT, q=q)
 V_inv = get_V_inv(DJT=DJT, q=q)
 
 U = operators.get_U(q = q)
-La = [operators.get_La(a=a, q=q, V=V, V_inv=V_inv) for a in [1, 2, 3]]
+U_dag = operators.get_Udag(U)
+
+La = [operators.get_La(a=a, q=q, V=DJT, V_inv=DJT_dag) for a in [1, 2, 3]] # the comm. rel are fullfilled also with V=V, V_inv=V_inv
 N_alpha = partition.get_N_alpha(q)
 
 q_max = q - 1/2 # only states with j up to (q - 1/2) satisfy the commutation relations
@@ -41,16 +43,23 @@ for j1 in [q_max - j_i/2 for j_i in range(0, int(2*q_max) + 1)]:
                 for a in range(N_c):
                     for b in range(N_c):
                         U_ab = operators.get_U_ab(U, a, b)
-                        comm_ab = np.dot(Lg, U_ab) - np.dot(U_ab, Lg)
-                        LHS = np.dot(comm_ab,v)
-                        RHS = np.zeros(shape=(N_alpha, 1), dtype=complex)
+                        U_dag_ab = operators.get_U_ab(U_dag, a, b)
+                        comm1_ab = np.dot(Lg, U_ab) - np.dot(U_ab, Lg)
+                        comm2_ab = np.dot(Lg, U_dag_ab) - np.dot(U_dag_ab, Lg)
+                        LHS1 = np.dot(comm1_ab,v)
+                        LHS2 = np.dot(comm2_ab,v)
+                        RHS1 = np.zeros(shape=(N_alpha, 1), dtype=complex)
+                        RHS2 = np.zeros(shape=(N_alpha, 1), dtype=complex)
                         for c in range(N_c):
-                            u_comp = operators.get_U_ab(U, a, c)
-                            RHS = RHS + np.dot(u_comp*tau_g[c,b], v) # eq. 4.3a of https://journals.aps.org/prd/pdf/10.1103/PhysRevD.11.395
+                            RHS1 = RHS1 + np.dot(-tau_g[a,c]*operators.get_U_ab(U, c, b), v)
+                            RHS2 = RHS2 + np.dot(operators.get_U_ab(U_dag, a, c)*tau_g[c,b], v)
                         ####
-                        msg = "(a,b)=({a}, {b}): |[L_{g},U_ab]*v - \\sum_c \\tau^{g}_ac U_cb v|^2 = ".format(a=a, b=b, g=g+1)
-                        diff = (LHS - RHS).round(decimals=decimals)
-                        print(msg, get_norm2(diff))
+                        msg1 = "(a,b)=({a}, {b}): |[L_{g},U_ab]*v - \\sum_c (- \\tau^{g})_ac U_cb v|^2 = " + 4*" ".format(a=a, b=b, g=g+1)
+                        diff1 = (LHS1 - RHS1).round(decimals=decimals)
+                        print(msg1, get_norm2(diff1))
+                        msg2 = "(a,b)=({a}, {b}): |[L_{g},U^\dagger_ab]*v - \\sum_c U^\dagger_ac \\tau^{g}_cb v|^2 = ".format(a=a, b=b, g=g+1)
+                        diff2 = (LHS2 - RHS2).round(decimals=decimals)
+                        print(msg2, get_norm2(diff2))
                     ####
                 ####
                 print("")
