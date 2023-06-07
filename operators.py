@@ -2,17 +2,14 @@
 
 import numpy as np
 import sympy as sp
-# from sympy.physics.quantum import TensorProduct as tp
 from sympy.physics.quantum.spin import WignerD
 try:
     from . import electric_basis as eb
     from . import partition
-    # import DJT_matrix
     from . import indices
 except:
     import electric_basis as eb
     import partition
-    # import DJT_matrix
     import indices
 
 N_c = 2  # number of colors
@@ -25,10 +22,8 @@ sigma_3 = np.array([[1, 0], [0, -1]])
 
 tau = {1: sigma_1/2.0, 2: sigma_2/2.0, 3: sigma_3/2.0}
 
-# V*\hat{L}_a * V^{-1}, where the \hat{L}_a are the momenta in the electric basis
-# V is the DJT, and V^{-1} is DJT^{\dagger}*W
-
-
+# V* \hat{L}_a * V^{-1}, where the \hat{L}_a are the momenta in the electric basis
+# V should be the DJT, and V^{-1} is DJT^{\dagger}
 def get_La(a, q, V, V_inv):
     La_eb = eb.get_La(a=a, q=q)
     La = np.dot(V, np.dot(La_eb, V_inv))
@@ -36,8 +31,6 @@ def get_La(a, q, V, V_inv):
 ####
 
 # \sum_a L_a*L_a. Same logic as for get_La()
-
-
 def get_Lsquared(q, V, V_inv):
     Lsquared_eb = eb.get_Lsquared(q=q)
     Lsquared = np.dot(V, np.dot(Lsquared_eb, V_inv))
@@ -64,21 +57,23 @@ def get_U(q):
     for i in range(N_alpha):
         i_theta, i_psi, i_phi = indices.S3_point_to_angles_index(i, q)
         onehalf = sp.Rational(1/2)
-        U_11[i, i] = +WignerD(onehalf, -onehalf, -onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit()
-        U_12[i, i] = -WignerD(onehalf, -onehalf, +onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit()
-        U_21[i, i] = -WignerD(onehalf, +onehalf, -onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit()
-        U_22[i, i] = +WignerD(onehalf, +onehalf, +onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit()
+        U_11[i, i] = +WignerD(onehalf, -onehalf, -onehalf,
+                              phi[i_phi], theta[i_theta], psi[i_psi]).doit()
+        U_12[i, i] = -WignerD(onehalf, -onehalf, +onehalf,
+                              phi[i_phi], theta[i_theta], psi[i_psi]).doit()
+        U_21[i, i] = -WignerD(onehalf, +onehalf, -onehalf,
+                              phi[i_phi], theta[i_theta], psi[i_psi]).doit()
+        U_22[i, i] = +WignerD(onehalf, +onehalf, +onehalf,
+                              phi[i_phi], theta[i_theta], psi[i_psi]).doit()
     ####
     return [[U_11, U_12], [U_21, U_22]]
 ####
 
-# returns the element (a,b) in color space, which is a matrix of size N_alpha x N_alpha
-
-
+# element (a,b) in color space,
+# which is a matrix of size N_alpha x N_alpha
 def get_U_ab(U, a, b):
     return U[a][b]
 ####
-
 
 
 # returns U^{\dagger} in the representation of get_U()

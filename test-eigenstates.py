@@ -2,7 +2,7 @@ import sympy as sp
 from DJT_matrix import *
 import operators
 
-q = 1 #3/2
+q = 3/2
 DJT = get_DJT(q = q)
 DJT_dag = get_DJT_dag(DJT)
 L3 = operators.get_La(a=3, q=q, V=DJT, V_inv=DJT_dag)
