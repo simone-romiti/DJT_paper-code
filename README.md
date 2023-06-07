@@ -13,13 +13,14 @@ The files `test-*.py` test the main features of the algorithm.
 - pseudo change of basis matrix $V$ + test invertibility
 - Canonical momenta built from the similarity transformation with the matrix $V$
 - Gauge links: $N_\alpha \times N_\alpha$ components in color space + test of unitarity
-- Test of the canonical commutation relations up to $N_{q-1/2}$.
+- Test of the canonical commutation relations for the $L_a$ up to $N_{q-1/2}$.
+- Test of the Lie algebra commutation relations (this should be trivial to check because $V^{-1} V = 1$)
 
 ## Things to be done
 
 **Achtung**: I am using numpy arrays to represent matrices. This means that the `*` operator is NOT the matrix multiplication. That is obtained with `np.dot()`.
 
-- Test of the Lie algebra commutation relations (this should be trivial to check because $V^{-1} V = 1$)
+- Test of the canonical commutation relations for the $R_a$ up to $N_{q-1/2}$.
 - Plaquette operator: Hilbert space tensor product of links at multiple points and usual matrix produc in color space
 - Hamiltonian for some given lattice
 - Locality of the canonical momenta (heatmap plot?)
