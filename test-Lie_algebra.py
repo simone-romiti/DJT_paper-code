@@ -21,8 +21,6 @@ print("rounding decimals", decimals)
 
 DJT = get_DJT(q)
 DJT_dag = np.conj(DJT).T
-V = get_V(DJT=DJT, q=q)
-V_inv = get_V_inv(DJT=DJT, q=q)
 
 N_q = partition.get_N_q(q=q)
 
@@ -32,14 +30,14 @@ eb_L3 = eb.get_La(a=3, q=q)
 eb_L = {1: eb_L1, 2: eb_L2, 3: eb_L3}
 eb_Lplus, eb_Lminus = eb.get_Lplus(q=q), eb.get_Lminus(q=q)
 
-L1 = operators.get_La(a=1, V=V, V_inv = V_inv, q=q) 
-L2 = operators.get_La(a=2, V=V, V_inv = V_inv, q=q) 
-L3 = operators.get_La(a=3, V=V, V_inv = V_inv, q=q)
+L1 = operators.get_La(a=1, V=DJT, V_inv = DJT_dag, q=q) 
+L2 = operators.get_La(a=2, V=DJT, V_inv = DJT_dag, q=q) 
+L3 = operators.get_La(a=3, V=DJT, V_inv = DJT_dag, q=q)
 L = {1: L1, 2: L2, 3: L3}
 
 print("Is \hat{L}_i = V^{-1} * L_i * V ?")
 for i in [x+1 for x in range(N_g)]:
-    delta = eb_L[i] - np.dot(V_inv, np.dot(L[i], V))
+    delta = eb_L[i] - np.dot(DJT_dag, np.dot(L[i], DJT))
     delta = delta.round(decimals=decimals)
     bg = np.array_equal(delta, np.zeros(shape=(N_q, N_q), dtype=complex))
     print("i :", i, bg)

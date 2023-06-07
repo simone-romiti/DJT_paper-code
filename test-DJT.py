@@ -23,19 +23,9 @@ DJT_H = np.conj(DJT).T
 res = np.dot(DJT_H, DJT)
 
 res = np.array(sp.Matrix(res).evalf(chop=True), dtype=complex).round(decimals=decimals)
+res = np.array(res, dtype=float)
 print(N_q, res.shape)
 
 print("DJT^\dagger * DJT")
 print(res)
 
-print("V^{-1}*V")
-V = get_V(DJT = DJT, q = q)
-V_inv = get_V_inv(DJT = DJT, q = q)
-
-V_inv_V = np.dot(V_inv, V).round(decimals=decimals)
-for i in range(N_q):
-    for j in range(N_q):
-        print(V_inv_V[i,j], end=" ")
-    ####
-    print("")
-####
