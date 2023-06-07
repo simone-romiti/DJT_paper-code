@@ -42,17 +42,7 @@ def get_Rplus(q):
 
 # R_1 - i R_2
 def get_Rminus(q):
-    N_q = partition.get_N_q(q)
-    Rminus = np.zeros(shape = (N_q, N_q))
-    for i in range(N_q):
-        j, mL, mR = su2_index_to_irrep(i, q=q)
-        if mR > -j:
-            i2 = su2_irrep_to_index(j, mL, mR-1, q=q)
-            Rminus[i2, i] = np.sqrt(float(j*(j+1) - mR*(mR-1)))
-        ####
-    ####
-    return Rminus
-####
+    return np.conj(get_Rplus(q)).T
 
 
 def get_R1(q):

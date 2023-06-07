@@ -38,6 +38,21 @@ def get_Lsquared(q, V, V_inv):
     ####
 ####
 
+# V* \hat{R}_a * V^{-1}, where the \hat{R}_a are the momenta in the electric basis
+# V should be the DJT, and V^{-1} is DJT^{\dagger}
+def get_Ra(a, q, V, V_inv):
+    Ra_eb = eb.get_Ra(a=a, q=q)
+    Ra = np.dot(V, np.dot(Ra_eb, V_inv))
+    return Ra
+####
+
+# \sum_a R_a*R_a. Same logic as for get_Ra()
+def get_Rsquared(q, V, V_inv):
+    Rsquared_eb = eb.get_Rsquared(q=q)
+    Rsquared = np.dot(V, np.dot(Rsquared_eb, V_inv))
+    return Rsquared
+    ####
+####
 
 # operator U in the diagonal basis.
 # It has both color and Hilbert space indices,
