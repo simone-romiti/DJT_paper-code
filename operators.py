@@ -65,10 +65,10 @@ def get_U(q):
     for i in range(N_alpha):
         i_theta, i_psi, i_phi = indices.S3_point_to_angles_index(i, q)
         onehalf = sp.Rational(1/2)
-        U_11[i, i] = WignerD(onehalf, +onehalf , +onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit()
-        U_12[i, i] = WignerD(onehalf, -onehalf , +onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit()
-        U_21[i, i] = WignerD(onehalf, +onehalf , -onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit()
-        U_22[i, i] = WignerD(onehalf, -onehalf , -onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit()
+        U_11[i, i] = +WignerD(onehalf, -onehalf, -onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit()
+        U_12[i, i] = -WignerD(onehalf, -onehalf, +onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit()
+        U_21[i, i] = -WignerD(onehalf, +onehalf, -onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit()
+        U_22[i, i] = +WignerD(onehalf, +onehalf, +onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit()
     ####
     return [[U_11, U_12], [U_21, U_22]]
 ####

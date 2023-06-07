@@ -1,33 +1,46 @@
+import partition
+import indices
 import operators
 import numpy as np
+import sympy as sp
+from sympy.physics.quantum.spin import WignerD
 
-q = 3
 
-U = operators.get_U(q)
-U_dag = operators.get_Udag(U)
+q = 3/2
 
-Up = operators.color_prod_links(U_dag, U)
-N_alpha = Up[0][0].shape[0]
+Uc = operators.get_U(q)
+Uc_dag = operators.get_Udag(Uc)
 
-print("""
-  The following output should be the tensor product of the identity on the Hilbert space 
-  with the identity on color space, 
-  namely the matrix: Up = [\mathrm{1}, 0], [0, mathrm{1}]
-  """)
+N_c = operators.N_c
 
-decimals = 15
-print("rounding decimals", decimals)
+N_alpha = partition.get_N_alpha(q=q)
+N_theta = partition.get_N_theta(q)
+N_phi = partition.get_N_phi(q)
+N_psi = partition.get_N_psi(q)
+N_alpha = partition.get_N_alpha(q)
+theta = partition.get_theta(N_theta)
+phi = partition.get_phi(N_phi)
+psi = partition.get_psi(N_psi)
 
-print("Up_11: ", end="")
-print(np.array_equal(np.eye(N_alpha), Up[0][0].round(decimals=decimals)))
+onehalf = sp.Rational(1/2)
+for i in range(N_alpha):
+  i_theta, i_psi, i_phi = indices.S3_point_to_angles_index(i, q)
+  W = [[0,0],[0,0]]
+  W[0][0] = +WignerD(onehalf, +onehalf , +onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit().evalf()
+  W[0][1] = -WignerD(onehalf, -onehalf , +onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit().evalf()
+  W[1][0] = -WignerD(onehalf, -onehalf , +onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit().evalf()
+  W[1][1] = +WignerD(onehalf, -onehalf , -onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit().evalf()
+  # w00 = sp.cos(theta[i_theta]/2)*sp.exp(-sp.I*(psi[i_psi]+phi[i_phi])/2).evalf()
+  w01 = -sp.sin(theta[i_theta]/2)*sp.exp(sp.I*(-psi[i_psi]+phi[i_phi])/2).evalf(chop=True)
+#  print(WignerD(onehalf, +onehalf , -onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit().evalf() + np.conj(WignerD(onehalf, -onehalf , +onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit().evalf()))
+  print(W[0][1] - w01)
+  for a in range(N_c):
+    for b in range(N_c):
+      U = Uc[a][b]
+      U_dag = Uc_dag[a][b]
+      # print(a, b, i, U[i,i], U_dag[i,i],  W[a][b]) 
+#    print(a, b, i, U_dag[i,i],  W[a][b]) 
+    ##
+  ##
+##
 
-print("Up_12: ", end="")
-print(np.array_equal(np.zeros(shape=(N_alpha, N_alpha)), Up[0][1].round(decimals=decimals)))
-
-print("Up_21: ", end="")
-print(np.array_equal(np.zeros(shape=(N_alpha, N_alpha)), Up[1][0].round(decimals=decimals)))
-
-print("Up_22: ", end="")
-print(np.array_equal(np.eye(N_alpha), Up[1][1].round(decimals=decimals)))
-
-## print(np.dot(U, U_dag))
