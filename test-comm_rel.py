@@ -8,7 +8,7 @@ import operators
 N_c = operators.N_c
 N_g = operators.N_g
 
-q = 1
+q = 3/2
 print("q =", q)
 DJT = get_DJT(q)
 DJT_dag = np.conj(DJT).T
@@ -75,10 +75,10 @@ for j1 in [q_max - j_i/2 for j_i in range(0, int(2*q_max) + 1)]:
               RHS3 = RHS3 + np.dot(operators.get_U_ab(U,a,c)*tau_g[c,b], v)
               RHS4 = RHS4 + np.dot(-tau_g[a,c]*operators.get_U_ab(U_dag, c, b), v)
             ##
-            msg3 = "(a,b)=({a}, {b}): |[R_{g},U_ab]*v - \\sum_c U_ac \\tau^{g}_bc v|^2 =".format(a=a, b=b, g=g+1)
+            msg3 = "(a,b)=({a}, {b}): |[R_{g},U_ab]*v - \\sum_c U_ac \\tau^{g}_cb v|^2 =".format(a=a, b=b, g=g+1)
             diff3 = (LHS3 - RHS3).round(decimals=decimals)
             print(msg3 + 20*" ", get_norm2(diff3))
-            msg4 = "(a,b)=({a}, {b}): |[R_{g},U^\\dagger_ab]*v - \\sum_c (- \\tau^{g})_ca U^\\dagger_cb v|^2 =".format(a=a, b=b, g=g+1)
+            msg4 = "(a,b)=({a}, {b}): |[R_{g},U^\\dagger_ab]*v - \\sum_c (- \\tau^{g})_ac U^\\dagger_cb v|^2 =".format(a=a, b=b, g=g+1)
             diff4 = (LHS4 - RHS4).round(decimals=decimals)
             print(msg4, get_norm2(diff4))
           ####
