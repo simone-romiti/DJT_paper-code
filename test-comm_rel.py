@@ -8,10 +8,10 @@ import operators
 N_c = operators.N_c
 N_g = operators.N_g
 
-q = 3/2
+q = 1
 print("q =", q)
 DJT = get_DJT(q)
-DJT_dag = np.conj(DJT).T
+DJT_dag = get_DJT_dag(DJT = DJT)
 
 U = operators.get_U(q = q)
 U_dag = operators.get_Udag(U)
@@ -47,15 +47,15 @@ for j1 in [q_max - j_i/2 for j_i in range(0, int(2*q_max) + 1)]:
             U_dag_ab = operators.get_U_ab(U_dag, a, b)
             #
             # [Lg, U] commutator
-            comm1_ab = np.dot(Lg, U_ab) - np.dot(U_ab, Lg)
-            comm2_ab = np.dot(Lg, U_dag_ab) - np.dot(U_dag_ab, Lg)
-            LHS1 = np.dot(comm1_ab,v)
-            LHS2 = np.dot(comm2_ab,v)
-            RHS1 = np.zeros(shape=(N_alpha,), dtype=complex)
-            RHS2 = np.zeros(shape=(N_alpha,), dtype=complex)
+            comm1_ab = Lg*U_ab - U_ab*Lg
+            comm2_ab = Lg*U_dag_ab - U_dag_ab*Lg
+            LHS1 = comm1_ab*v
+            LHS2 = comm2_ab*v
+            RHS1 = np.matrix(np.zeros(shape=(N_alpha,), dtype=complex))
+            RHS2 = np.matrix(np.zeros(shape=(N_alpha,), dtype=complex))
             for c in range(N_c):
-              RHS1 = RHS1 + np.dot(-tau_g[a,c]*operators.get_U_ab(U, c, b), v)
-              RHS2 = RHS2 + np.dot(operators.get_U_ab(U_dag, a, c)*tau_g[c,b], v)
+              RHS1 = RHS1 + (-tau_g[a,c]*operators.get_U_ab(U, c, b) * v)
+              RHS2 = RHS2 + (operators.get_U_ab(U_dag, a, c)*tau_g[c,b] * v)
             ##
             msg1 = "(a,b)=({a}, {b}): |[L_{g},U_ab]*v - \\sum_c (- \\tau^{g})_ac U_cb v|^2 = ".format(a=a, b=b, g=g+1)
             diff1 = (LHS1 - RHS1).round(decimals=decimals)
@@ -65,15 +65,15 @@ for j1 in [q_max - j_i/2 for j_i in range(0, int(2*q_max) + 1)]:
             print(msg2 + 3*" ", get_norm2(diff2))
             #
             # [Rg, U] commutator
-            comm3_ab = np.dot(Rg, U_ab) - np.dot(U_ab, Rg)
-            comm4_ab = np.dot(Rg, U_dag_ab) - np.dot(U_dag_ab, Rg)
-            LHS3 = np.dot(comm3_ab,v)
-            LHS4 = np.dot(comm4_ab,v)
-            RHS3 = np.zeros(shape=(N_alpha,), dtype=complex)
-            RHS4 = np.zeros(shape=(N_alpha,), dtype=complex)
+            comm3_ab = Rg * U_ab -     U_ab     * Rg
+            comm4_ab = Rg * U_dag_ab - U_dag_ab * Rg
+            LHS3 = comm3_ab * v
+            LHS4 = comm4_ab * v
+            RHS3 = np.matrix(np.zeros(shape=(N_alpha,), dtype=complex))
+            RHS4 = np.matrix(np.zeros(shape=(N_alpha,), dtype=complex))
             for c in range(N_c):
-              RHS3 = RHS3 + np.dot(operators.get_U_ab(U,a,c)*tau_g[c,b], v)
-              RHS4 = RHS4 + np.dot(-tau_g[a,c]*operators.get_U_ab(U_dag, c, b), v)
+              RHS3 = RHS3 + (operators.get_U_ab(U,a,c) * tau_g[c,b] * v)
+              RHS4 = RHS4 + (-tau_g[a,c] * operators.get_U_ab(U_dag, c, b) * v)
             ##
             msg3 = "(a,b)=({a}, {b}): |[R_{g},U_ab]*v - \\sum_c U_ac \\tau^{g}_cb v|^2 =".format(a=a, b=b, g=g+1)
             diff3 = (LHS3 - RHS3).round(decimals=decimals)

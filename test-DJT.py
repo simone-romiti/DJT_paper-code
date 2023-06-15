@@ -10,6 +10,8 @@ decimals = 14
 print("rounding decimals", decimals)
 
 q = 1 # truncation (integer or half integer)
+print("q =", q)
+
 N_q = partition.get_N_q(q)
 N_alpha = partition.get_N_alpha(q)
 
@@ -18,9 +20,9 @@ w = partition.get_ws(N_theta)
 
 DJT = get_DJT(q)
 print(DJT.shape)
-DJT_H = np.conj(DJT).T
+DJT_dag = get_DJT_dag(DJT = DJT)
 
-res = np.dot(DJT_H, DJT)
+res = DJT_dag * DJT
 
 res = np.array(sp.Matrix(res).evalf(chop=True), dtype=complex).round(decimals=decimals)
 res = np.array(res, dtype=float)

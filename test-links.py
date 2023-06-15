@@ -7,6 +7,10 @@ from sympy.physics.quantum.spin import WignerD
 
 
 q = 3/2
+print("q=", q)
+
+decimals = 15
+print("rounding decimals", decimals)
 
 Uc = operators.get_U(q)
 Uc_dag = operators.get_Udag(Uc)
@@ -26,14 +30,14 @@ onehalf = sp.Rational(1/2)
 for i in range(N_alpha):
   i_theta, i_psi, i_phi = indices.S3_point_to_angles_index(i, q)
   W = [[0,0],[0,0]]
-  W[0][0] = +WignerD(onehalf, +onehalf , +onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit().evalf()
-  W[0][1] = -WignerD(onehalf, -onehalf , +onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit().evalf()
-  W[1][0] = -WignerD(onehalf, -onehalf , +onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit().evalf()
-  W[1][1] = +WignerD(onehalf, -onehalf , -onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit().evalf()
+  W[0][0] = complex(+WignerD(onehalf, +onehalf , +onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit().evalf())
+  W[0][1] = complex(-WignerD(onehalf, -onehalf , +onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit().evalf())
+  W[1][0] = complex(-WignerD(onehalf, -onehalf , +onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit().evalf())
+  W[1][1] = complex(+WignerD(onehalf, -onehalf , -onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit().evalf())
   # w00 = sp.cos(theta[i_theta]/2)*sp.exp(-sp.I*(psi[i_psi]+phi[i_phi])/2).evalf()
-  w01 = -sp.sin(theta[i_theta]/2)*sp.exp(sp.I*(-psi[i_psi]+phi[i_phi])/2).evalf(chop=True)
+  w01 = complex(-sp.sin(theta[i_theta]/2)*sp.exp(sp.I*(-psi[i_psi]+phi[i_phi])/2).evalf(chop=True))
 #  print(WignerD(onehalf, +onehalf , -onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit().evalf() + np.conj(WignerD(onehalf, -onehalf , +onehalf, phi[i_phi], theta[i_theta], psi[i_psi]).doit().evalf()))
-  print(W[0][1] - w01)
+  print(np.complex64(W[0][1] - w01).round(decimals=decimals))
   for a in range(N_c):
     for b in range(N_c):
       U = Uc[a][b]

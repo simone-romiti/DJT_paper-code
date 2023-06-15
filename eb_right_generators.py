@@ -6,7 +6,7 @@ from DJT_matrix import *
 # \sum_a R_a*R_a = \sum_a L_a*L_a
 def get_Rsquared(q):
     N_q = partition.get_N_q(q)
-    Rsquared = np.zeros(shape = (N_q, N_q))
+    Rsquared = np.matrix(np.zeros(shape = (N_q, N_q)))
     for i in range(N_q):
         j, mL, mR = su2_index_to_irrep(i, q)
         Rsquared[i,i] = j*(j+1)
@@ -17,7 +17,7 @@ def get_Rsquared(q):
 # R_3
 def get_R3(q):
     N_q = partition.get_N_q(q)
-    R3 = np.zeros(shape = (N_q, N_q))
+    R3 = np.matrix(np.zeros(shape = (N_q, N_q)))
     for i in range(N_q):
         j, mL, mR = su2_index_to_irrep(i, q)
         R3[i,i] = -mR
@@ -28,7 +28,7 @@ def get_R3(q):
 # R_1 + i R_2
 def get_Rplus(q):
     N_q = partition.get_N_q(q)
-    Rplus = np.zeros(shape = (N_q, N_q))
+    Rplus = np.matrix(np.zeros(shape = (N_q, N_q)))
     for i in range(N_q):
         j, mL, mR = su2_index_to_irrep(i, q=q)
         if mR < j:
@@ -36,13 +36,13 @@ def get_Rplus(q):
             Rplus[i2, i] = np.sqrt(float(j*(j+1) - mR*(mR+1)))
         ####
     ####
-    return -Rplus.T
+    return -Rplus.getH()
 ####
 
 
 # R_1 - i R_2
 def get_Rminus(q):
-    return np.conj(get_Rplus(q)).T
+    return get_Rplus(q).getH()
 
 
 def get_R1(q):

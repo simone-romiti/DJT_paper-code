@@ -18,7 +18,7 @@ The files `test-*.py` test the main features of the algorithm.
 
 ## Things to be done
 
-**Achtung**: I am using numpy arrays to represent matrices. This means that the `*` operator is NOT the matrix multiplication. That is obtained with `np.dot()`.
+**Achtung**: I am using numpy.matrix arrays to represent matrices. This means that the `*` operator is the matrix multiplication. One can also use `np.dot()`. If one uses numpy.array the "*" will not do the matrix multiplication, but the one component by component.
 
 - Test of the canonical commutation relations for the $R_a$ up to $N_{q-1/2}$.
 - Plaquette operator: Hilbert space tensor product of links at multiple points and usual matrix produc in color space

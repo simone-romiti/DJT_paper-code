@@ -6,7 +6,7 @@ from DJT_matrix import *
 # \sum_a L_a*L_a = \sum_a R_a*R_a
 def get_Lsquared(q):
     N_q = partition.get_N_q(q)
-    Lsquared = np.zeros(shape = (N_q, N_q))
+    Lsquared = np.matrix(np.zeros(shape = (N_q, N_q)))
     for i in range(N_q):
         j, mL, mR = su2_index_to_irrep(i, q)
         Lsquared[i,i] = j*(j+1)
@@ -17,7 +17,7 @@ def get_Lsquared(q):
 # L_3
 def get_L3(q):
     N_q = partition.get_N_q(q)
-    L3 = np.zeros(shape = (N_q, N_q))
+    L3 = np.matrix(np.zeros(shape = (N_q, N_q)))
     for i in range(N_q):
         j, mL, mR = su2_index_to_irrep(i, q)
         L3[i,i] = mL
@@ -28,7 +28,7 @@ def get_L3(q):
 # L_1 + i L2
 def get_Lplus(q):
     N_q = partition.get_N_q(q)
-    Lplus = np.zeros(shape = (N_q, N_q))
+    Lplus = np.matrix(np.zeros(shape = (N_q, N_q)))
     for i in range(N_q):
         j, mL, mR = su2_index_to_irrep(i, q=q)
         if mL < j:
@@ -41,7 +41,7 @@ def get_Lplus(q):
 
 # L_1 - i L2
 def get_Lminus(q):
-    return np.conj(get_Lplus(q)).T
+    return get_Lplus(q).getH()
 
 def get_L1(q):
     return (get_Lplus(q) + get_Lminus(q))/2.0

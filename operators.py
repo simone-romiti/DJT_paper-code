@@ -16,9 +16,9 @@ N_c = 2  # number of colors
 N_g = int(N_c*N_c - 1)  # number of generators of the Lie algebra
 
 # Pauli matrices divided my 2
-sigma_1 = np.array([[0, 1], [1, 0]])
-sigma_2 = np.array([[0, -1j], [+1j, 0]])
-sigma_3 = np.array([[1, 0], [0, -1]])
+sigma_1 = np.matrix([[0, 1], [1, 0]])
+sigma_2 = np.matrix([[0, -1j], [+1j, 0]])
+sigma_3 = np.matrix([[1, 0], [0, -1]])
 
 tau = {1: sigma_1/2.0, 2: sigma_2/2.0, 3: sigma_3/2.0}
 
@@ -26,14 +26,14 @@ tau = {1: sigma_1/2.0, 2: sigma_2/2.0, 3: sigma_3/2.0}
 # V should be the DJT, and V^{-1} is DJT^{\dagger}
 def get_La(a, q, V, V_inv):
     La_eb = eb.get_La(a=a, q=q)
-    La = np.dot(V, np.dot(La_eb, V_inv))
+    La = V * La_eb * V_inv
     return La
 ####
 
 # \sum_a L_a*L_a. Same logic as for get_La()
 def get_Lsquared(q, V, V_inv):
     Lsquared_eb = eb.get_Lsquared(q=q)
-    Lsquared = np.dot(V, np.dot(Lsquared_eb, V_inv))
+    Lsquared = V * Lsquared_eb * V_inv
     return Lsquared
     ####
 ####
@@ -42,14 +42,14 @@ def get_Lsquared(q, V, V_inv):
 # V should be the DJT, and V^{-1} is DJT^{\dagger}
 def get_Ra(a, q, V, V_inv):
     Ra_eb = eb.get_Ra(a=a, q=q)
-    Ra = np.dot(V, np.dot(Ra_eb, V_inv))
+    Ra = V * Ra_eb * V_inv
     return Ra
 ####
 
 # \sum_a R_a*R_a. Same logic as for get_Ra()
 def get_Rsquared(q, V, V_inv):
     Rsquared_eb = eb.get_Rsquared(q=q)
-    Rsquared = np.dot(V, np.dot(Rsquared_eb, V_inv))
+    Rsquared = V * Rsquared_eb * V_inv
     return Rsquared
     ####
 ####
@@ -65,10 +65,10 @@ def get_U(q):
     theta = partition.get_theta(N_theta)
     phi = partition.get_phi(N_phi)
     psi = partition.get_psi(N_psi)
-    U_11 = np.zeros(shape=(N_alpha, N_alpha), dtype=complex)
-    U_12 = np.zeros(shape=(N_alpha, N_alpha), dtype=complex)
-    U_21 = np.zeros(shape=(N_alpha, N_alpha), dtype=complex)
-    U_22 = np.zeros(shape=(N_alpha, N_alpha), dtype=complex)
+    U_11 = np.matrix(np.zeros(shape=(N_alpha, N_alpha), dtype=complex))
+    U_12 = np.matrix(np.zeros(shape=(N_alpha, N_alpha), dtype=complex))
+    U_21 = np.matrix(np.zeros(shape=(N_alpha, N_alpha), dtype=complex))
+    U_22 = np.matrix(np.zeros(shape=(N_alpha, N_alpha), dtype=complex))
     for i in range(N_alpha):
         i_theta, i_psi, i_phi = indices.S3_point_to_angles_index(i, q)
         onehalf = sp.Rational(1/2)
@@ -94,7 +94,7 @@ def get_U_ab(U, a, b):
 # returns U^{\dagger} in the representation of get_U()
 def get_Udag(U):
     # [b][a] and not [a][b] because the dagger acts also on the color space
-    Udag = [[np.conj(U[b][a]).T for b in range(N_c)] for a in range(N_c)]
+    Udag = [[(U[b][a]).getH() for b in range(N_c)] for a in range(N_c)]
     return Udag
 ####
 
@@ -109,7 +109,7 @@ def color_prod_links(U, V):
         for b in range(N_c):
             U_ab = np.zeros(shape=(N, N), dtype=complex)
             for c in range(N_c):
-                U_ab += np.dot(U[a][c], V[c][b])
+                U_ab += (U[a][c]) * (V[c][b])
             ####
             U_prod[a][b] = U_ab
         ####

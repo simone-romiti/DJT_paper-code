@@ -20,23 +20,25 @@ decimals = 14
 print("rounding decimals", decimals)
 
 DJT = get_DJT(q)
-DJT_dag = np.conj(DJT).T
+DJT_dag = DJT.getH()
 
 N_q = partition.get_N_q(q=q)
 
 L = {a: operators.get_La(a=a, V=DJT, V_inv = DJT_dag, q=q) for a in [1,2,3]}
 R = {a: operators.get_Ra(a=a, V=DJT, V_inv = DJT_dag, q=q) for a in [1,2,3]}
 Lplus = L[1] + 1j*L[2]
-Lminus = np.conj(Lplus).T
+Lminus = Lplus.getH()
 Rplus = R[1] + 1j*R[2]
-Rminus = np.conj(Rplus).T
+Rminus = Rplus.getH()
 
-A = (np.dot(L[3], Lplus) - np.dot(Lplus, L[3])).round(decimals=decimals)
+A = (L[3] * Lplus - Lplus * L[3]).round(decimals=decimals)
 B = Lplus.round(decimals=decimals)
 
+print("This should be the zero matrix: [L_3, L_+] - L_+ = ")
 print(A-B)
 
-C = (np.dot(R[3], Rplus) - np.dot(Rplus, R[3])).round(decimals=decimals)
+C = (R[3] * Rplus - Rplus * R[3]).round(decimals=decimals)
 D = Rplus.round(decimals=decimals)
 
+print("This should be the zero matrix: [R_3, R_+] - R_+ = ")
 print(C-D)

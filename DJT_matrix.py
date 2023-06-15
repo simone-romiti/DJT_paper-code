@@ -22,7 +22,7 @@ def get_DJT(q):
     phi = partition.get_phi(N_phi)
     psi = partition.get_psi(N_psi)
     w = partition.get_ws(N_theta)
-    DJT = np.zeros(shape=(N_alpha, N_q), dtype=complex)
+    DJT = np.matrix(np.zeros(shape=(N_alpha, N_q), dtype=complex))
     for i in range(N_alpha):
         i_theta, i_psi, i_phi = S3_point_to_angles_index(i, q)
         for k in range(N_q):
@@ -38,15 +38,15 @@ def get_DJT(q):
 
 # DJT^{\dagger}
 def get_DJT_dag(DJT):
-    return np.conj(DJT).T
+    return DJT.getH()
 ####
 
 # norm squared of a numpy vector: |v|^2
-# v must have shape, e.g. (100,)
+# v is a numpy.matrix --> implicit check of the dimensions when doing the product
 def get_norm2(v):
-    v_dag = np.conj(v).T
-    norm2 = np.dot(v_dag, v)
-    return norm2
+    v_dag = v.getH()
+    norm2 = v_dag*v
+    return norm2[0,0]
 ####
 
 # discrete version of the eigenstate of the continuum manifold (already normalized)

@@ -30,4 +30,4 @@ print(np.array_equal(np.zeros(shape=(N_alpha, N_alpha)), Up[1][0].round(decimals
 print("Up_22: ", end="")
 print(np.array_equal(np.eye(N_alpha), Up[1][1].round(decimals=decimals)))
 
-## print(np.dot(U, U_dag))
+## print(U * U_dag)

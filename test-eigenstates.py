@@ -2,7 +2,7 @@ import sympy as sp
 from DJT_matrix import *
 import operators
 
-q = 3/2
+q = 1 #3/2
 DJT = get_DJT(q = q)
 DJT_dag = get_DJT_dag(DJT)
 L3 = operators.get_La(a=3, q=q, V=DJT, V_inv=DJT_dag)
@@ -26,10 +26,10 @@ for j1 in [q_max - j_i/2 for j_i in range(0, int(2*q_max) + 1)]:
             v = get_DJT_column(DJT, j1, m1, mu1, q=q)
             print("|v|^2 =", get_norm2(v).round(decimals=decimals))
             #
-            w1 = np.dot(L3, v) - m1*v
+            w1 = L3*v - m1*v
             print("|L_3*v - m*v|^2 = ", get_norm2(w1).round(decimals=decimals))
             #
-            w2 = np.dot(Lsquared, v) - j1*(j1+1)*v
+            w2 = Lsquared * v - j1*(j1+1) * v
             print("|L^2*v - j*(j+1)*v|^2 = ", get_norm2(w2).round(decimals=decimals))
             #
             print("")

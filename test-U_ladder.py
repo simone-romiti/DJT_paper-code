@@ -12,7 +12,7 @@ N_g = operators.N_g
 q = 1
 print("q =", q)
 DJT = get_DJT(q)
-DJT_dag = np.conj(DJT).T
+DJT_dag = get_DJT_dag(DJT=DJT)
 
 U = operators.get_U(q = q)
 U_dag = operators.get_Udag(U)
@@ -33,11 +33,11 @@ for jd in range(1, int(2*q)+1):
     print("j =", sp.Rational(j))
     for a in range(N_c):
         for b in range(N_c):
-            v = np.dot(U[a][b], vac)
+            v = U[a][b] * vac
             for k in range(jd-1):
-                v = np.dot(U[a][b], v)
+                v = U[a][b] * v
             ####
-            w = np.dot(Lsquared, v)
+            w = Lsquared * v
             dw = w - j*(j+1)*v
             msg = "| L^2 (U_{a}{b})^{j}|0> - j(j+1) (U_{a}{b})^{j}|0> |^2 =".format(j=jd, a=a, b=b)
             res = get_norm2(dw).round(decimals = decimals)
