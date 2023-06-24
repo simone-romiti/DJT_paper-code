@@ -30,7 +30,6 @@ def get_DJT(q):
             DJT[i, k] = sp.Pow(j + 1/2, 1/2)*sp.sqrt(w[s]/(N_psi*N_phi))*D_jmmu
         ####
     ####
-    np.save(filepath, DJT)
     return DJT
 ####
 
