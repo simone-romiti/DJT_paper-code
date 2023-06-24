@@ -10,7 +10,7 @@ from matplotlib.animation import FuncAnimation
 import pickle
 
 
-q_vals = [k/2 for k in range(1, 8)]
+q_vals = [k/2 for k in range(1, 6)]
 q_max = max(q_vals)
 N_g = operators.N_g # number of generators in the algebra
 
@@ -24,38 +24,13 @@ for q in q_vals:
     #
     for a in range(1, N_g+1):
         La = operators.get_La(a=a, q=q, V=DJT, V_inv=DJT_dag)
-        abs_La = np.abs(La)/partition.get_asympt_d3alpha(q=q)
-        abs_La_dict[a].append(abs_La)
+        abs_values = np.abs(np.array(La))  # Compute absolute values of elements
+        flat_values = abs_values.flatten()
+        N = flat_values.shape[0]
+        plt.hist(x=flat_values, bins=int(np.sqrt(N)), density=True)
+#        plt.legend()
+        plt.savefig("./histo/q{q}_a{a}.pdf".format(q=q, a=a) )
+        plt.cla()
     ####
-####
-
-with open('abs_La.pickle', 'wb') as file:
-    pickle.dump(abs_La_dict, file)
-
-print("Creating the animation")
-num_frames = len(q_vals)
-for a in range(1, N_g+1):
-    # list of matrices for the animation
-    matrices = abs_La_dict[a]
-
-    # Create a figure and axis
-    fig, ax = plt.subplots()
-
-    # Initialize the image object
-    im = ax.imshow(matrices[0], cmap='hot', interpolation='nearest')
-
-    cbar = fig.colorbar(im)
-    # Define the update function for animation
-    def update(frame):
-        im.set_array(matrices[frame])
-        ax.set_title("q = {q}".format(q = q_vals[frame]))
-        return im,
-    ####
-
-    # Create the animation
-    animation = FuncAnimation(fig, update, frames=num_frames, interval=500, blit=True)
-
-    # Save the animation as HTML
-    animation.save("L{a}-qmax{q_max}.html".format(a=a, q_max=q_max), writer='html')    
 ####
 
