@@ -3,6 +3,7 @@
 import sympy as sp
 import numpy as np
 from sympy.physics.quantum.spin import WignerD
+import os
 
 try:
     from . import partition
@@ -13,6 +14,16 @@ except:
 
 
 def get_DJT(q):
+    folder = "DJTs"
+    folder_Exist = os.path.exists(folder)
+    if not folder_Exist:
+        os.makedirs(folder)
+    filepath = f"{folder}/{int(2*q)}.npy"
+    file_Exist = os.path.exists(filepath)
+    if file_Exist:
+        DJT = np.matrix(np.load(filepath))
+        return DJT
+
     N_q = partition.get_N_q(q)
     N_theta = partition.get_N_theta(q)
     N_phi = partition.get_N_phi(q)
@@ -33,6 +44,7 @@ def get_DJT(q):
             DJT[i, k] = sp.Pow(j + 1/2, 1/2)*sp.sqrt(w[s]/(N_psi*N_phi))*D_jmmu
         ####
     ####
+    np.save(filepath, DJT)
     return DJT
 ####
 

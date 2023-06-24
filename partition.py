@@ -94,15 +94,15 @@ def get_Legendre_roots_theta(n):
 
 def get_theta(N_theta):
     theta = get_Legendre_roots_theta(N_theta)
-    return theta
+    return np.array(theta)
 ####
 
 def get_phi(N_phi):
-    return [(4*np.pi/N_phi)*i for i in range(N_phi)]
+    return np.array([(4*np.pi/N_phi)*i for i in range(N_phi)])
 ####
 
 def get_psi(N_psi):
-    return [(4*np.pi/N_psi)*i for i in range(N_psi)]
+    return np.array([(4*np.pi/N_psi)*i for i in range(N_psi)])
 ####
 
 # inner product of 2 functions with weight function w(x)=1
