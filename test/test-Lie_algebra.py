@@ -6,10 +6,10 @@ import sympy as sp
 import sys
 sys.path.insert(0, '../')
 
-import S3_sphere.partition as partition
-from DJT.DJT_matrix import *
-import operators.operators as operators
-import operators.electric_basis as eb
+import su2_DJT.S3_sphere.partition as partition
+from su2_DJT.DJT.DJT_matrix import *
+import su2_DJT.operators.operators as operators
+import su2_DJT.operators.electric_basis as eb
 
 tau = operators.tau
 

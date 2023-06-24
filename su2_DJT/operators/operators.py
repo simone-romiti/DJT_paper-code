@@ -5,9 +5,9 @@ import sympy as sp
 from sympy.physics.quantum.spin import WignerD
 
 
-from . import electric_basis as eb
-import S3_sphere.partition as partition
-import S3_sphere.indices as indices
+import su2_DJT.operators.electric_basis as eb
+import su2_DJT.S3_sphere.partition as partition
+import su2_DJT.S3_sphere.indices as indices
 
 N_c = 2  # number of colors
 N_g = int(N_c*N_c - 1)  # number of generators of the Lie algebra

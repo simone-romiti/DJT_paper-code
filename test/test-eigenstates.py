@@ -5,8 +5,8 @@ import sympy as sp
 import sys
 sys.path.insert(0, '../')
 
-from DJT.DJT_matrix import *
-import operators.operators as operators
+from su2_DJT.DJT.DJT_matrix import *
+import su2_DJT.operators.operators as operators
 
 q = 1 #3/2
 DJT = get_DJT(q = q)

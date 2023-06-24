@@ -3,9 +3,9 @@
 import sys
 sys.path.insert(0, '../')
 
-import operators.operators as operators
-from DJT.DJT_matrix import *
-import S3_sphere.partition as partition
+import su2_DJT.operators.operators as operators
+from   su2_DJT.DJT.DJT_matrix import *
+import su2_DJT.S3_sphere.partition as partition
 
 import numpy as np
 import matplotlib.pyplot as plt

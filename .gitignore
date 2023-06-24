@@ -7,6 +7,9 @@
 *.Rhistory
 *.log
 
+*.png
+*.pickle
+
 *.ipynb_checkpoints*
 
 DJTs/

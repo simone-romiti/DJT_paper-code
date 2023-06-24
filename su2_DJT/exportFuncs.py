@@ -1,7 +1,7 @@
 
-from operators.operators import get_U, get_Lsquared, get_La  # , get_Ra
-
-from DJT.DJT_matrix import get_V, get_V_inv, get_DJT
+from su2_DJT.operators.operators import *
+from su2_DJT.operators.operators import get_U, get_Lsquared, get_La  # , get_Ra
+from su2_DJT.DJT.DJT_matrix import get_V, get_V_inv, get_DJT
 
 import numpy as np
 

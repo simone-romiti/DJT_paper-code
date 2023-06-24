@@ -1,12 +1,12 @@
 # Test of the orthogonality of Wigner D and d functions
 
 import sympy as sp
-from sympy.physics.quantum.spin import WignerD
+from   sympy.physics.quantum.spin import WignerD
 
 import sys
 sys.path.insert(0, '../')
 
-from S3_sphere.partition import *
+from su2_DJT.S3_sphere.partition import *
 
 def Wignerd(j, m, mu, theta):
     return WignerD(j, m, mu, 0.0, theta, 0.0).doit()

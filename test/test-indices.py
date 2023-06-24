@@ -4,7 +4,7 @@ import sympy as sp
 import sys
 sys.path.insert(0, '../')
 
-from DJT.DJT_matrix import *
+from su2_DJT.DJT.DJT_matrix import *
 
 q = 2
 

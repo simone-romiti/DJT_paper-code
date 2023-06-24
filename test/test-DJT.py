@@ -7,7 +7,7 @@ import numpy as np
 import sys
 sys.path.insert(0, '../')
 
-from DJT.DJT_matrix import *
+from su2_DJT.DJT.DJT_matrix import *
 
 decimals = 14
 print("rounding decimals", decimals)

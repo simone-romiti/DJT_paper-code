@@ -2,7 +2,7 @@
 import sys
 sys.path.insert(0, '../')
 
-import operators.operators as operators
+import su2_DJT.operators.operators as operators
 import numpy as np
 
 q = 3

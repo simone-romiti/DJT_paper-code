@@ -1,6 +1,6 @@
 # operators defined on a spatial grid of points
 
-import operators
+import su2_DJT.operators as operators
 
 import numpy as np
 import functools

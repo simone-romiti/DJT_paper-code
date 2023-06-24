@@ -2,10 +2,9 @@
 
 import sympy as sp
 
-import operators.operators as operators
-from DJT.DJT_matrix import *
+import su2_DJT.operators.operators as operators
+from   su2_DJT.DJT.DJT_matrix import *
 
-import operators
 
 N_c = operators.N_c
 N_g = operators.N_g

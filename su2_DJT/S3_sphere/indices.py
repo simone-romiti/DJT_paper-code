@@ -2,7 +2,7 @@
 import sympy as sp
 import numpy as np
 
-from . import partition
+import su2_DJT.S3_sphere.partition as partition
 
 
 def check_su2_irrep(j, mL, mR):

@@ -1,7 +1,7 @@
 # Right generators in the electric basis
 
-from S3_sphere.indices import *
-from DJT.DJT_matrix import *
+from su2_DJT.S3_sphere.indices import *
+from su2_DJT.DJT.DJT_matrix import *
 
 # \sum_a R_a*R_a = \sum_a L_a*L_a
 def get_Rsquared(q):
