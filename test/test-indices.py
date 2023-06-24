@@ -1,6 +1,10 @@
 
 import sympy as sp
-from DJT_matrix import *
+
+import sys
+sys.path.insert(0, '../')
+
+from DJT.DJT_matrix import *
 
 q = 2
 

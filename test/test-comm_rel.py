@@ -1,9 +1,12 @@
 import sympy as sp
 ##from sympy.physics.matrices import msigma
 
-import partition
-from DJT_matrix import *
-import operators
+import sys
+sys.path.insert(0, '../')
+
+import S3_sphere.partition as partition
+from DJT.DJT_matrix import *
+import operators.operators as operators
 
 N_c = operators.N_c
 N_g = operators.N_g

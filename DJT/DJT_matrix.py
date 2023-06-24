@@ -5,12 +5,8 @@ import numpy as np
 from sympy.physics.quantum.spin import WignerD
 import os
 
-try:
-    from . import partition
-    from .indices import *
-except:
-    import partition
-    from indices import *
+from S3_sphere import partition
+from S3_sphere.indices import *
 
 
 def get_DJT(q):

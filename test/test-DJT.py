@@ -4,7 +4,10 @@ import sympy as sp
 import numpy as np
 
 
-from DJT_matrix import *
+import sys
+sys.path.insert(0, '../')
+
+from DJT.DJT_matrix import *
 
 decimals = 14
 print("rounding decimals", decimals)

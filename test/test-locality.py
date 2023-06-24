@@ -1,8 +1,11 @@
 # testing the locality of the operator whan the truncation approached infinity
 
-import operators
-from DJT_matrix import *
-import partition
+import sys
+sys.path.insert(0, '../')
+
+import operators.operators as operators
+from DJT.DJT_matrix import *
+import S3_sphere.partition as partition
 
 import numpy as np
 import matplotlib.pyplot as plt

@@ -2,8 +2,9 @@
 
 import sympy as sp
 
-import partition
-from DJT_matrix import *
+import operators.operators as operators
+from DJT.DJT_matrix import *
+
 import operators
 
 N_c = operators.N_c

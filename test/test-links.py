@@ -1,9 +1,13 @@
-import partition
-import indices
-import operators
 import numpy as np
 import sympy as sp
 from sympy.physics.quantum.spin import WignerD
+
+import sys
+sys.path.insert(0, '../')
+
+import S3_sphere.partition as partition
+import S3_sphere.indices as indices
+import operators.operators as operators
 
 
 q = 3/2

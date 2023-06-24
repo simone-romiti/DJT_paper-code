@@ -1,7 +1,7 @@
 # Left generators in the electric basis
 
-import partition
-from DJT_matrix import *
+from S3_sphere.indices import *
+from DJT.DJT_matrix import *
 
 # \sum_a L_a*L_a = \sum_a R_a*R_a
 def get_Lsquared(q):
