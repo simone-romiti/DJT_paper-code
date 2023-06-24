@@ -49,6 +49,30 @@ def get_N_alpha(q):
     return N_alpha
 ####
 
+
+# infinitesimal increment in theta when q \to \infty
+def get_asympt_dtheta(q):
+    return np.pi/get_N_theta(q=q)
+####
+
+# increment in phi
+def get_dphi(q):
+    return 4*np.pi/get_N_phi(q=q)
+####
+
+# increment in psi
+def get_dpsi(q):
+    return 4*np.pi/get_N_psi(q=q)
+####
+
+# measure of the infinitesimal increment for q \to \infty
+def get_asympt_d3alpha(q):
+    dtheta = get_asympt_dtheta(q)
+    dphi = get_dphi(q)
+    dpsi = get_dpsi(q)
+    return dtheta*dphi*dpsi
+####
+
 # roots of the n-th Legendre polynomial: P_n(x)
 def get_Legende_roots_x(n):
     # Calculate the coefficients of the n-th Legendre polynomial
