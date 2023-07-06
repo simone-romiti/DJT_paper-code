@@ -11,12 +11,12 @@ N_c = operators_pt.N_c
 # U(x, mu) operator from DJT and spacetime lattice grid of points G
 # q=truncation in j
 # It is implemented as a block matrix:
-# [ 1  0  0   ... 0
-#   0  1  0   ...  0
+# [ 1  0  0   ...       0
+#   0  1  0   ...       0
 #   ...
 #   ...    U(x, mu) ... 0
 #   ...
-#   0 ...       0  1 ]
+#   0 ...            0  1 ]
 # the function returns a list of 2*2=4 operators corresponding to the color indices
 def get_U(G, x, mu, q):
     N_p = G.get_N() # total number of pairs (x, mu)
@@ -74,12 +74,12 @@ def get_plaquette(G, x, mu, nu, q):
 # L_a(x, mu) operator from DJT and spacetime lattice grid of points G
 # q=truncation in j
 # It is implemented as a block matrix:
-# [ 1  0  0   ...         0
-#   0  1  0   ...         0
+# [ 0  0  0   ...         0
+#   0  0  0   ...         0
 #   ...
 #   ...    L_a(x, mu) ... 0
 #   ...
-#   0 ...              0  1 ]
+#   0 ...              0  0 ]
 def get_La(a, G, x, mu, q, V, V_inv):
     N_p = G.get_N() # total number of pairs (x, mu)
     N_alpha = partition.get_N_alpha(q)
