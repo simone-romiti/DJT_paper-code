@@ -2,6 +2,9 @@
 
 from su2_DJT.S3_sphere.indices import *
 from su2_DJT.DJT.DJT_matrix import *
+import su2_DJT.S3_sphere.partition as partition
+
+import numpy as np
 
 # \sum_a R_a*R_a = \sum_a L_a*L_a
 def get_Rsquared(q):
