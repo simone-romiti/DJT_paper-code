@@ -3,13 +3,22 @@
 import sympy as sp
 import numpy as np
 from sympy.physics.quantum.spin import WignerD
+import spherical_functions
 import os
 
 from su2_DJT.S3_sphere import partition
 from su2_DJT.S3_sphere.indices import *
 
 
-def get_DJT(q):
+def get_WignerD(j, mL, mR, alpha, beta, gamma, use_sympy):
+    if(j < 29 and not use_sympy): # spherical_functions package is stable up to this point
+        # complex conjugate of the value obtained with sympy
+        return np.conj(spherical_functions.Wigner_D_element(alpha, beta, gamma, j, mL, mR))
+    else:
+        return complex(WignerD(sp.Rational(j), sp.Rational(mL), sp.Rational(mR), alpha, beta, gamma).doit())
+####
+
+def get_DJT(q, use_sympy=False):
     N_q = partition.get_N_q(q)
     N_theta = partition.get_N_theta(q)
     N_phi = partition.get_N_phi(q)
@@ -25,8 +34,8 @@ def get_DJT(q):
         for k in range(N_q):
             j, m, mu = su2_index_to_irrep(k, q)
             s = i_theta
-            D_jmmu = WignerD(sp.Rational(j), sp.Rational(m), sp.Rational(
-                mu), phi[i_phi], theta[i_theta], psi[i_psi]).doit()
+            phi_i, theta_i, psi_i = phi[i_phi], theta[i_theta], psi[i_psi]
+            D_jmmu = get_WignerD(sp.Rational(j), sp.Rational(m), sp.Rational(mu), phi_i, theta_i, psi_i, use_sympy=use_sympy)
             DJT[i, k] = sp.Pow(j + 1/2, 1/2)*sp.sqrt(w[s]/(N_psi*N_phi))*D_jmmu
         ####
     ####

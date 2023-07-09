@@ -11,9 +11,9 @@ import su2_DJT.operators.operators as operators
 N_c = operators.N_c
 N_g = operators.N_g
 
-q = 1
+q = 3/2
 print("q =", q)
-DJT = get_DJT(q)
+DJT = get_DJT(q, use_sympy=False)
 DJT_dag = get_DJT_dag(DJT = DJT)
 
 U = operators.get_U(q = q)
