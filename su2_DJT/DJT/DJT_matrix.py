@@ -55,6 +55,10 @@ def get_norm2(v):
     return norm2[0,0]
 ####
 
+def get_norm(v):
+    return np.sqrt(get_norm2(v))
+####
+
 # discrete version of the eigenstate of the continuum manifold (already normalized)
 def get_DJT_column(DJT, j, m, mu, q):
     idx = su2_irrep_to_index(j=j, mL=m, mR=mu, q=q)

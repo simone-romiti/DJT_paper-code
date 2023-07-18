@@ -57,6 +57,14 @@ def S3_point_to_angles_index(i, q):
     return [i_theta, i_phi, i_psi]
 ####
 
+def S3_point_to_angles_value(i, q):
+    N_theta = partition.get_N_theta(q)
+    N_phi = partition.get_N_phi(q)
+    N_psi = partition.get_N_psi(q)
+    i_theta, i_phi, i_psi = S3_point_to_angles_index(i, q)
+    return [np.pi*i_theta/N_theta, 4*np.pi*i_phi/N_phi, 4*np.pi*i_psi/N_psi]
+####
+
 
 # i = i_theta*N_phi*N_psi + i_psi*N_phi + i_phi
 def angles_to_S3_point_index(i_theta, i_phi, i_psi, q):

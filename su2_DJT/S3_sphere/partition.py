@@ -134,7 +134,17 @@ def get_ws(N):
     return list(coefficients)
 ##
 
+# returns yi of eq. (5) of https://arxiv.org/pdf/2304.02322.pdf from the angles
+def get_yi(alpha):
+    theta, phi, psi = alpha
+    y0 = + np.cos(theta/2) * np.cos((phi+psi)/2)
+    y1 = - np.cos(theta/2) * np.sin((phi+psi)/2)
+    y2 = - np.sin(theta/2) * np.cos((-phi+psi)/2)
+    y3 = + np.sin(theta/2) * np.sin((-phi+psi)/2)
+    return [y0, y1, y2, y3]
+####
 
-
-
+def get_distance_S3(y1, y2):
+    return np.linalg.norm(np.array(y1)-np.array(y2))
+####
 
