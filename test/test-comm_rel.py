@@ -68,7 +68,7 @@ for j1 in [q_max - j_i/2 for j_i in range(0, int(2*q_max) + 1)]:
             print(msg2 + 3*" ", get_norm2(diff2))
             #
             # [Rg, U] commutator
-            comm3_ab = Rg * U_ab -     U_ab     * Rg
+            comm3_ab = Rg * U_ab - U_ab * Rg
             comm4_ab = Rg * U_dag_ab - U_dag_ab * Rg
             LHS3 = comm3_ab * v
             LHS4 = comm4_ab * v

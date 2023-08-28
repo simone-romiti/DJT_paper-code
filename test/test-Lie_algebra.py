@@ -16,7 +16,7 @@ tau = operators.tau
 N_c = operators.N_c
 N_g = operators.N_g
 
-q = 1
+q = 3/2
 print("q =", q)
 
 decimals = 14
@@ -26,6 +26,7 @@ DJT = get_DJT(q)
 DJT_dag = get_DJT_dag(DJT = DJT)
 
 N_q = partition.get_N_q(q=q)
+N_alpha = partition.get_N_alpha(q=q)
 
 eb_L1 = eb.get_La(a=1, q=q) 
 eb_L2 = eb.get_La(a=2, q=q) 
@@ -43,7 +44,7 @@ eb_R1 = eb.get_Ra(a=1, q=q)
 eb_R2 = eb.get_Ra(a=2, q=q) 
 eb_R3 = eb.get_Ra(a=3, q=q)
 eb_R = {1: eb_R1, 2: eb_R2, 3: eb_R3}
-eb_Rplus, eb_Rminus = eb.get_Lplus(q=q), eb.get_Lminus(q=q)
+eb_Rplus, eb_Rminus = eb.get_Rplus(q=q), eb.get_Rminus(q=q)
 
 R1 = operators.get_Ra(a=1, V=DJT, V_inv = DJT_dag, q=q) 
 R2 = operators.get_Ra(a=2, V=DJT, V_inv = DJT_dag, q=q) 
@@ -66,20 +67,28 @@ for i in [x+1 for x in range(N_g)]:
             if i==j or i==k or j==k:
                 continue
             ####
-            L_list = [eb_L, L]
-            basis_list = ["electric", "magnetic"]
-            for ib in range(2):
-                A = L_list[ib][i] * L_list[ib][j] - L_list[ib][j] * L_list[ib][i]
-                B = 1j*float(sp.LeviCivita(i,j,k))*L_list[ib][k]
-                N = B.shape[0]
-                dAB = np.array(sp.Matrix(A-B).evalf(decimals, chop=True), dtype=complex).round(decimals=decimals)
-                dAB = np.array(dAB) ## shoud be the 0 matrix
-                print(basis_list[ib], "basis.", "i, j, k :", i,j,k, end = "  ")
-                b1 = np.array_equal(dAB, np.zeros(shape=(N, N), dtype=complex))
-                if not b1:
-                    print(dAB)
-                    quit()
-                print("[L_i,L_j] = i \espsilon_{ijk} L_k ?", b1)
+            LL1 = [eb_L, L]
+            LL2 = [eb_R, R]
+            LL = [LL1, LL2]
+            gen_name=["L", "R"]
+            for i_list in range(len(LL)):
+                L_list = LL[i_list]
+                Lname = gen_name[i_list]
+                basis_list = ["electric", "magnetic"]
+                for ib in range(2):
+                    A = L_list[ib][i] * L_list[ib][j] - L_list[ib][j] * L_list[ib][i]
+                    B = 1j*float(sp.LeviCivita(i,j,k))*L_list[ib][k]
+                    N = B.shape[0]
+                    dAB = np.array(sp.Matrix(A-B).evalf(decimals, chop=True), dtype=complex).round(decimals=decimals)
+                    dAB = np.array(dAB) ## shoud be the 0 matrix
+                    print(basis_list[ib], "basis.", "i, j, k :", i,j,k, end = "  ")
+                    b1 = np.array_equal(dAB, np.zeros(shape=(N, N), dtype=complex))
+                    if not b1:
+                        print(dAB)
+                        quit()
+                    ####
+                    print("[{Lname}_i,{Lname}_j] = i \epsilon_{{ijk}} {Lname}_k ?".format(Lname=Lname), b1)
+                ####
             ####
             x = tau[i] * tau[j] - tau[j] * tau[i]
             y = 1j*float(sp.LeviCivita(i,j,k))*tau[k]
@@ -87,7 +96,7 @@ for i in [x+1 for x in range(N_g)]:
             dxy = np.array(dxy) ## shoud be the 0 matrix
             b2 = np.array_equal(dxy, np.zeros(shape=(N_c, N_c), dtype=complex))
             print("i, j, k :", i,j,k, end = " ")
-            print("[\\tau_i,\\tau_j] = i \espsilon_{ijk} \\tau_k ?        ", b2)
+            print("[\\tau_i,\\tau_j] = i \espsilon_{ijk} \\tau_k ? ", b2)
         ####
     ####
 ####
