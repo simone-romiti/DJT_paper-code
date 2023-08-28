@@ -36,12 +36,14 @@ Rminus = Rplus.getH()
 
 A = (L[3] * Lplus - Lplus * L[3]).round(decimals=decimals)
 B = Lplus.round(decimals=decimals)
+d_AB = A-B
 
-print("This should be the zero matrix: [L_3, L_+] - L_+ = ")
-print(A-B)
+print("Check: [L_3, L_+] - L_+ = 0 ?")
+print(np.array_equal(d_AB, np.zeros(shape=d_AB.shape, dtype=complex)))
 
 C = (R[3] * Rplus - Rplus * R[3]).round(decimals=decimals)
 D = Rplus.round(decimals=decimals)
+d_CD = C-D
 
-print("This should be the zero matrix: [R_3, R_+] - R_+ = ")
-print(C-D)
+print("Check: [R_3, R_+] - R_+ = 0 ?")
+print(np.array_equal(d_CD, np.zeros(shape=d_CD.shape, dtype=complex)))
