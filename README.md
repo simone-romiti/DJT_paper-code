@@ -15,14 +15,14 @@ The files `test-*.py` test the main features of the algorithm.
 - Gauge links: $N_\alpha \times N_\alpha$ components in color space + test of unitarity
 - Test of the canonical commutation relations for the $L_a$ up to $N_{q-1/2}$.
 - Test of the Lie algebra commutation relations (this should be trivial to check because $V^{-1} V = 1$)
+- Test of the canonical commutation relations for the $R_a$ up to $N_{q-1/2}$.
+- Locality of the canonical momenta
+- Gauge invariant states and Gauss law
 
 ## Things to be done
 
 **Achtung**: I am using numpy.matrix arrays to represent matrices. This means that the `*` operator is the matrix multiplication. One can also use `np.dot()`. If one uses numpy.array the "*" will not do the matrix multiplication, but the one component by component.
 
-- Test of the canonical commutation relations for the $R_a$ up to $N_{q-1/2}$.
 - Plaquette operator: Hilbert space tensor product of links at multiple points and usual matrix produc in color space
 - Hamiltonian for some given lattice
-- Locality of the canonical momenta (heatmap plot?)
-- Gauge invariant states and Gauss law
 
