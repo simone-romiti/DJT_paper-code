@@ -11,17 +11,23 @@ import su2_DJT.operators.operators as operators
 N_c = operators.N_c
 N_g = operators.N_g
 
+
 q = 3/2
 print("q =", q)
+
+N_alpha = partition.get_N_alpha(q)
+
 DJT = get_DJT(q, use_sympy=False)
 DJT_dag = get_DJT_dag(DJT = DJT)
 
 U = operators.get_U(q = q)
 U_dag = operators.get_Udag(U)
 
-La = [operators.get_La(a=a, q=q, V=DJT, V_inv=DJT_dag) for a in [1, 2, 3]] 
+La = [operators.get_La(a=a, q=q, V=DJT, V_inv=DJT_dag) for a in [1, 2, 3]]
 Ra = [operators.get_Ra(a=a, q=q, V=DJT, V_inv=DJT_dag) for a in [1, 2, 3]] 
-N_alpha = partition.get_N_alpha(q)
+
+Lsquared = operators.get_Lsquared(q=q, V=DJT, V_inv=DJT_dag) 
+
 
 q_max = q - 1/2 # only states with j up to (q - 1/2) satisfy the commutation relations
 print("q_max =", q_max)
@@ -39,6 +45,22 @@ for j1 in [q_max - j_i/2 for j_i in range(0, int(2*q_max) + 1)]:
       print("(j, m, mu)=", sp.Rational(j1), sp.Rational(m1), sp.Rational(mu1))
       #
       v = get_DJT_column(DJT, j1, m1, mu1, q=q)
+
+      ## \sum_a L_a L_a
+      for a in range(N_c):
+        for b in range(N_c):
+          U_ab = operators.get_U_ab(U, a, b)
+          # U_dag_ab = operators.get_U_ab(U_dag, a, b)
+          diff_Lsquared = ((Lsquared*U_ab - U_ab*Lsquared) - (3/4)*U_ab)*v # (1/2)*(1/2 + 1)
+          for c in range(N_c):
+
+          m2 = "(a,b)=({a}, {b}): |([L^2, U_ab]*v - (3/4)*U) v|^2 = ".format(a=a, b=b)
+          diff_Lsquared = (diff_Lsquared).round(decimals=decimals)
+          print(m2 + 20*" ", get_norm2(diff_Lsquared))
+        ##
+      ##
+
+      ## individual generators
       for g in range(N_g):
         print("Generator: ", g)
         Lg = La[g]

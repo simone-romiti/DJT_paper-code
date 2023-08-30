@@ -18,17 +18,18 @@ sigma_2 = np.matrix([[0, -1j], [+1j, 0]])
 sigma_3 = np.matrix([[1, 0], [0, -1]])
 
 tau = {1: sigma_1/2.0, 2: sigma_2/2.0, 3: sigma_3/2.0}
+tau_squared = tau[1]*tau[1] + tau[2]*tau[2] + tau[3]*tau[3]
 
 # V* \hat{L}_a * V^{-1}, where the \hat{L}_a are the momenta in the electric basis
 # V should be the DJT, and V^{-1} is DJT^{\dagger}
-def get_La(a, q, V, V_inv):
+def get_La(a, q, V: np.matrix, V_inv: np.matrix):
     La_eb = eb.get_La(a=a, q=q)
     La = V * La_eb * V_inv
     return La
 ####
 
 # \sum_a L_a*L_a. Same logic as for get_La()
-def get_Lsquared(q, V, V_inv):
+def get_Lsquared(q, V: np.matrix, V_inv: np.matrix):
     Lsquared_eb = eb.get_Lsquared(q=q)
     Lsquared = V * Lsquared_eb * V_inv
     return Lsquared
@@ -37,14 +38,14 @@ def get_Lsquared(q, V, V_inv):
 
 # V* \hat{R}_a * V^{-1}, where the \hat{R}_a are the momenta in the electric basis
 # V should be the DJT, and V^{-1} is DJT^{\dagger}
-def get_Ra(a, q, V, V_inv):
+def get_Ra(a, q, V: np.matrix, V_inv: np.matrix):
     Ra_eb = eb.get_Ra(a=a, q=q)
     Ra = V * Ra_eb * V_inv
     return Ra
 ####
 
 # \sum_a R_a*R_a. Same logic as for get_Ra()
-def get_Rsquared(q, V, V_inv):
+def get_Rsquared(q, V: np.matrix, V_inv: np.matrix):
     Rsquared_eb = eb.get_Rsquared(q=q)
     Rsquared = V * Rsquared_eb * V_inv
     return Rsquared

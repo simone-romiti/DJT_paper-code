@@ -11,8 +11,7 @@ import su2_DJT.S3_sphere.partition as partition
 
 q_max = 30
 
-for q in [x/2  for x in range(int(2*q_max))]:
-    #print("q =", q)
+for q in [x/2  for x in range(1, int(2*q_max))]:
     N_q = partition.get_N_q(q)
     N_alpha = partition.get_N_alpha(q)
     dN = N_alpha-N_q
