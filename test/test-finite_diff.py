@@ -13,11 +13,25 @@ from su2_DJT.fd_trig_poly.operators import *
 #from su2_DJT.fd_trig_poly.derivative import *
 
 
-n = 3 # 2*lmax +1
+n = 7 # 2*lmax +1
 lmax = (n-1)/2
 print("lmax:" , lmax)
 
-L2 = np.matrix(get_L2(n, 2*n+1), dtype=complex)
+# L2 = np.matrix(get_L2(n, 2*n+1), dtype=complex)
+
+# N1 = 5
+# N2, N3 = 2*N1+1, 2*N1+1
+
+q_max = 3
+N1 = q_max + 1
+N2, N3 = 4*q_max+1, 4*q_max+1
+
+theta = [k*np.pi/(N1+1) for k in range(N1)]
+phi = [k*4*np.pi/(N2+1) for k in range(N2)]
+psi = [k*4*np.pi/(N3+1) for k in range(N2)]
+
+mom = momenta(theta, phi, psi)
+L2 = mom.Lsquared()
 
 eigs = np.real(np.linalg.eigvals(L2))
 eigs = [x for x in sorted(eigs)]
