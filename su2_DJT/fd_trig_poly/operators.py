@@ -151,109 +151,35 @@ class momenta:
         self.inv_sin_theta = np.kron(np.kron(apply_diag(lambda t: 1/np.sin(t), get_theta(self.N_theta)), Id_phi), Id_psi)
     ####
     def Lsquared(self):
-        A1 = -(self.sin_phi**2)*(self.cot_theta**2)*(self.kron_D_phi**2)
-        A2 = -(self.sin_phi**2)*(self.cot_theta)*self.kron_D_theta
-        A3 = -(self.sin_phi**2)*(self.kron_D_theta**2)
-        A4 = 2*(self.cot_theta)*(self.inv_sin_theta)*(self.kron_D_phi*self.kron_D_psi)
-        A5 = - (self.sin_phi**2)*(self.inv_sin_theta**2)*self.kron_D_psi**2
-        A6 = -(self.cos_phi**2)*(self.cot_theta**2)*(self.kron_D_phi**2)
-        A7 = -(self.cos_phi**2)*(self.cot_theta)*(self.kron_D_theta)
-        A8 = -(self.cos_phi**2)*(self.kron_D_theta**2)
-        A9 = -(self.kron_D_phi**2)
-        A10 = -(self.cos_phi**2)*(self.inv_sin_theta**2)*(self.kron_D_psi**2)
-        return A1+A2+A3+A4+A5+A6+A7+A8+A9+A10
-
+        A1 = -(self.cot_theta)*self.kron_D_theta
+        A2 = -(self.kron_D_theta**2)
+        A3 = -(self.cot_theta**2)*(self.kron_D_phi**2) - (self.kron_D_phi**2)
+        A4 = +2*(self.cot_theta)*(self.inv_sin_theta)*(self.kron_D_phi*self.kron_D_psi)
+        A5 = - (self.inv_sin_theta**2)*(self.kron_D_psi**2)
+        return A1+A2+A3+A4+A5
     ####
-    # def L1(self):
-    #     a = - self.cot_theta * self.cos_phi * self.D_phi
-    #     b = - self.sin_phi * self.D_theta
-    #     c = + self.cos_phi * self.inv_sin_theta * self.D_psi
-    #     res = -1j * (a+b+c)
-    #     return res
-    # ####
-    #     def L2(self):
-    #         a = - self.cot_theta * self.sin_phi * self.D_phi
-    #         b = + self.cos_phi * self.D_theta
-    #         c = + self.sin_phi * self.inv_sin_theta * self.D_psi
-    #         res = -1j * (a+b+c)
-    #         return res
-    #     ####
-    #     def L3(self):
-    #         return -1j * self.D_phi
-    #     ####
-    #     def Lplus(self):
-    #         return self.L1() + 1j * self.L2()
-    #     ####
-    #     def Lminus(self):
-    #         return self.Lplus().getH()
-    #     ####
-    #     def Lsquared(self):
-    #         M = self.L1()*self.L1()
-    #         M += self.L2()*self.L2()
-    #         M += self.L3()*self.L3()
-    #         return M
-    #     ####
-    # ####
-
-def get_Lplus(N, M):
-    phi, theta = get_phi(N), get_theta(M)
-    Dphi, Dtheta = get_Dphi(N), get_Dtheta(M)
-    exp_iphi = apply_diag(np.exp, 1j*phi)
-    cot_theta = apply_diag(lambda t: 1/np.tan(t), theta)
-    res = np.kron(exp_iphi, Dtheta) + np.kron(exp_iphi*Dphi, 1j*cot_theta)
-    return res
-####
-
-def get_Lminus(N, M):
-    phi, theta = get_phi(N), get_theta(M)
-    Dphi, Dtheta = get_Dphi(N), get_Dtheta(M)
-    exp_miphi = apply_diag(np.exp, -1j*phi)
-    cot_theta = apply_diag(lambda t: 1/np.tan(t), theta)
-    res = np.kron(exp_miphi, -Dtheta) + np.kron(exp_miphi*Dphi, 1j*cot_theta)
-    return res
-####
-
-def get_Lx(N, M):
-    Lplus, Lminus = get_Lplus(N, M), get_Lminus(N, M)
-    Lx = (Lplus+Lminus)/2
-    return Lx
-####
-
-def get_Ly(N, M):
-    Lplus, Lminus = get_Lplus(N, M), get_Lminus(N, M)
-    Ly = (Lplus-Lminus)/(2*1j)
-    return Ly
-####
-
-
-def get_Lz(N):
-    Lz = -1j*get_Dphi(N)
-    return Lz
-####
-
-def get_L2(N, M):
-    theta = get_theta(M)
-    Dphi = get_Dphi(N)
-    Dphi2 = Dphi*Dphi
-    Dtheta = get_Dtheta(M)
-    Dtheta2 = Dtheta*Dtheta
-    cot_theta = apply_diag(lambda z: 1/np.tan(z), theta)
-    sin_m2_theta = apply_diag(sin_m2, theta)
-    #
-    IdN = np.matrix(np.eye(N))
-    # return get_Lx(N, M)**2 + get_Ly(N, M)**2 + np.kron(IdN, get_Lz(M))**2
-    T1 = np.matrix(Dtheta2 + cot_theta*Dtheta)
-    res = np.kron(IdN, T1) + np.kron(Dphi2, sin_m2_theta)
-    res = -res
-    return np.matrix(res)
-####
-
-def get_fourier_mode(N, s):
-    Ui = np.matrix(np.zeros(N,1))
-    for i in range(N):
-        phi_i = i*(2*np.pi/N)
-        Ui[i, 0] = sp.exp(s*1j*phi_i)
+    def L1(self):
+        a = - self.cot_theta * self.cos_phi * self.D_phi
+        b = - self.sin_phi * self.D_theta
+        c = + self.cos_phi * self.inv_sin_theta * self.D_psi
+        res = -1j * (a+b+c)
+        return res
     ####
-    return Ui
+    def L2(self):
+        a = - self.cot_theta * self.sin_phi * self.D_phi
+        b = + self.cos_phi * self.D_theta
+        c = + self.sin_phi * self.inv_sin_theta * self.D_psi
+        res = -1j * (a+b+c)
+        return res
+    ####
+    def L3(self):
+        return -1j * self.D_phi
+    ####
+    def Lplus(self):
+        return self.L1() + 1j * self.L2()
+    ####
+    def Lminus(self):
+        return self.Lplus().getH()
+    ####
 ####
 
