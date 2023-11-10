@@ -11,11 +11,19 @@ from su2_DJT.S3_sphere.indices import *
 
 
 def get_WignerD(j, mL, mR, alpha, beta, gamma, use_sympy):
+    """
+    Returns the Wigner D function:
+
+    D^{j}_{mL,mR} = e^{+i*alpha} * d^{j}_{mL,mR}(beta) * e^{+i*gamma}
+    
+    Note: the factor (-1)^(mL-mR) is needed to compensate the different normalization 
+
+    """
     if(j < 29 and not use_sympy): # spherical_functions package is stable up to this point
-        # complex conjugate of the value obtained with sympy
-        return np.conj(spherical_functions.Wigner_D_element(alpha, beta, gamma, j, mL, mR))
+        # complex conjugate to get the same as sympy
+        return (-1)**(mL-mR) * np.conj(spherical_functions.Wigner_D_element(alpha, beta, gamma, j, -mL, -mR))
     else:
-        return complex(WignerD(sp.Rational(j), sp.Rational(mL), sp.Rational(mR), alpha, beta, gamma).doit())
+        return (-1)**(mL-mR) * complex(WignerD(sp.Rational(j), -sp.Rational(mL), -sp.Rational(mR), alpha, beta, gamma).doit())
 ####
 
 def get_DJT(q, use_sympy=False):

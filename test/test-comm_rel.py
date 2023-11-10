@@ -12,7 +12,7 @@ N_c = operators.N_c
 N_g = operators.N_g
 
 
-q = 3/2
+q = 1
 print("q =", q)
 
 N_alpha = partition.get_N_alpha(q)
@@ -36,12 +36,12 @@ decimals = 15
 print("rounding decimals", decimals)
 
 print("The following loop tests the discrete eigenstates")
-for j1 in [q_max - j_i/2 for j_i in range(0, int(2*q_max) + 1)]:
+for j1 in [j_i/2 for j_i in range(0, int(2*q_max) + 1)]:
   print("-------------------------")
   print("  q =", sp.Rational(j1))
   deg_j1 = int(2*j1) + 1 # degeneracy of the left and right quantum numbers
-  for m1 in [j1 - i_m for i_m in range(deg_j1)]:
-    for mu1 in [j1 - i_mu for i_mu in range(deg_j1)]:
+  for m1 in [-j1 + i_m for i_m in range(deg_j1)]:
+    for mu1 in [-j1 + i_mu for i_mu in range(deg_j1)]:
       print("(j, m, mu)=", sp.Rational(j1), sp.Rational(m1), sp.Rational(mu1))
       #
       v = get_DJT_column(DJT, j1, m1, mu1, q=q)
@@ -51,12 +51,13 @@ for j1 in [q_max - j_i/2 for j_i in range(0, int(2*q_max) + 1)]:
         for b in range(N_c):
           U_ab = operators.get_U_ab(U, a, b)
           # U_dag_ab = operators.get_U_ab(U_dag, a, b)
-          diff_Lsquared = ((Lsquared*U_ab - U_ab*Lsquared) - (3/4)*U_ab)*v # (1/2)*(1/2 + 1)
-          for c in range(N_c):
-
-          m2 = "(a,b)=({a}, {b}): |([L^2, U_ab]*v - (3/4)*U) v|^2 = ".format(a=a, b=b)
-          diff_Lsquared = (diff_Lsquared).round(decimals=decimals)
-          print(m2 + 20*" ", get_norm2(diff_Lsquared))
+          if j1 == 0:
+            diff_Lsquared = ((Lsquared*U_ab - U_ab*Lsquared) - (3/4)*U_ab)*v # (1/2)*(1/2 + 1)
+            print("Testing L^2 on vacuum")
+            m2 = "(a,b)=({a}, {b}): |([L^2, U_ab]*v - (3/4)*U) v|^2 = ".format(a=a, b=b)
+            diff_Lsquared = (diff_Lsquared).round(decimals=decimals)
+            print(m2 + 20*" ", get_norm2(diff_Lsquared))
+          ##
         ##
       ##
 

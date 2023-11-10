@@ -12,7 +12,7 @@ from su2_DJT.DJT.DJT_matrix import *
 decimals = 14
 print("rounding decimals", decimals)
 
-q = 1 # truncation (integer or half integer)
+q = 3/2 # truncation (integer or half integer)
 print("q =", q)
 
 N_q = partition.get_N_q(q)
@@ -28,9 +28,8 @@ DJT_dag = get_DJT_dag(DJT = DJT)
 res = DJT_dag * DJT
 
 res = np.array(sp.Matrix(res).evalf(chop=True), dtype=complex).round(decimals=decimals)
-res = np.array(res, dtype=float)
 print(N_q, res.shape)
 
 print("DJT^\dagger * DJT")
-print(res)
+print(np.array_equal(res, np.eye(N_q, dtype=complex)))
 

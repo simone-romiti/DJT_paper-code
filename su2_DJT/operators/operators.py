@@ -2,12 +2,13 @@
 
 import numpy as np
 import sympy as sp
-from sympy.physics.quantum.spin import WignerD
+#from sympy.physics.quantum.spin import WignerD
 
 
 import su2_DJT.operators.electric_basis as eb
 import su2_DJT.S3_sphere.partition as partition
 import su2_DJT.S3_sphere.indices as indices
+from su2_DJT.DJT.DJT_matrix import get_WignerD
 
 N_c = 2  # number of colors
 N_g = int(N_c*N_c - 1)  # number of generators of the Lie algebra
@@ -70,14 +71,10 @@ def get_U(q):
     for i in range(N_alpha):
         i_theta, i_psi, i_phi = indices.S3_point_to_angles_index(i, q)
         onehalf = sp.Rational(1/2)
-        U_11[i, i] = +WignerD(onehalf, -onehalf, -onehalf,
-                              phi[i_phi], theta[i_theta], psi[i_psi]).doit()
-        U_12[i, i] = -WignerD(onehalf, -onehalf, +onehalf,
-                              phi[i_phi], theta[i_theta], psi[i_psi]).doit()
-        U_21[i, i] = -WignerD(onehalf, +onehalf, -onehalf,
-                              phi[i_phi], theta[i_theta], psi[i_psi]).doit()
-        U_22[i, i] = +WignerD(onehalf, +onehalf, +onehalf,
-                              phi[i_phi], theta[i_theta], psi[i_psi]).doit()
+        U_11[i, i] = +get_WignerD(onehalf, -onehalf, -onehalf, phi[i_phi], theta[i_theta], psi[i_psi], use_sympy=False)
+        U_12[i, i] = -get_WignerD(onehalf, -onehalf, +onehalf, phi[i_phi], theta[i_theta], psi[i_psi], use_sympy=False)
+        U_21[i, i] = -get_WignerD(onehalf, +onehalf, -onehalf, phi[i_phi], theta[i_theta], psi[i_psi], use_sympy=False)
+        U_22[i, i] = +get_WignerD(onehalf, +onehalf, +onehalf, phi[i_phi], theta[i_theta], psi[i_psi], use_sympy=False)
     ####
     return [[U_11, U_12], [U_21, U_22]]
 ####
