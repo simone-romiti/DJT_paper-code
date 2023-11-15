@@ -3,7 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 plt.rcParams.update({
     "text.usetex": True,
-    "font.family": "Helvetica"
+    "font.family": "Helvetica",
+    "font.size": 16
 })
 
 import sys
@@ -40,6 +41,7 @@ plt.xlabel('$i$')
 plt.ylabel('$\lambda$')
 #plt.title('Eigenvalues of $\sum_a L_a L_a$')
 plt.grid(True, linestyle="dashed")
+plt.tight_layout()
 plt.savefig("./Lsquared.pdf")
 
 plt.close()
@@ -65,5 +67,6 @@ plt.ylabel('$\lambda$')
 #plt.title('Eigenvalues of $\sum_a L_a L_a$')
 plt.grid(True, linestyle="dashed")
 plt.legend()
+plt.tight_layout()
 plt.savefig("./La.pdf")
 
