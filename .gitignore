@@ -1,0 +1,15 @@
+
+*.html
+*.tex
+*.toc
+*__pycache__*
+*.pdf
+*.Rhistory
+*.log
+*~
+
+*.png
+*.pickle
+
+*.ipynb_checkpoints*
+

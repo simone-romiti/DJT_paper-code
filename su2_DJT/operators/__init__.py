@@ -1,0 +1,1 @@
+""" Degrees of freedom of the theory """
