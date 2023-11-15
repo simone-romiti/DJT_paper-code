@@ -1,6 +1,12 @@
 import sympy as sp
 import numpy as np
+
+
+import sys
+sys.path.insert(0, '../')
+
 from su2_DJT.DJT.DJT_matrix import get_WignerD
+
 
 onehalf = (1/2)
 theta, phi, psi = 0.1, -0.2, -0.3

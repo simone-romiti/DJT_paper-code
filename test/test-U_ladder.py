@@ -2,8 +2,11 @@
 
 import sympy as sp
 
+import sys
+sys.path.insert(0, '../')
+
 import su2_DJT.operators.operators as operators
-from   su2_DJT.DJT.DJT_matrix import *
+from su2_DJT.DJT.DJT_matrix import *
 
 
 N_c = operators.N_c

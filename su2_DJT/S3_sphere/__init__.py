@@ -1,1 +1,1 @@
-# routines about the discretization of the sphere
+""" Routines about the discretization of the sphere """

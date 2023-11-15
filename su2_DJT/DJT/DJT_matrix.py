@@ -27,6 +27,15 @@ def get_WignerD(j, mL, mR, alpha, beta, gamma, use_sympy):
 ####
 
 def get_DJT(q, use_sympy=False):
+    """Returns the matrix representation of the DJT
+
+    Args:
+        q (float): half-integer such that j<=q
+        use_sympy (bool, optional): Use sympy to compute the Wigner D functions. Defaults to False.
+
+    Returns:
+        numpy.matrix: matrix representation of the transform
+    """
     N_q = partition.get_N_q(q)
     N_theta = partition.get_N_theta(q)
     N_phi = partition.get_N_phi(q)
@@ -52,23 +61,59 @@ def get_DJT(q, use_sympy=False):
 
 # DJT^{\dagger}
 def get_DJT_dag(DJT):
+    """Returns the dagger of the DJT
+
+    Args:
+        DJT (numpy matrix): DJT matrix representation
+
+    Returns:
+        numpy matrix: DJT^\dagger
+    """
     return DJT.getH()
 ####
 
 # norm squared of a numpy vector: |v|^2
 # v is a numpy.matrix --> implicit check of the dimensions when doing the product
 def get_norm2(v):
+    """Norm squared of a vector
+
+    Args:
+        v (numpy (column) matrix): vector representing the wavefunction at the sampling points
+
+    Returns:
+        float: ||v||^2
+    """
     v_dag = v.getH()
     norm2 = v_dag*v
     return norm2[0,0]
 ####
 
 def get_norm(v):
+    """Norm of the vector
+
+    Args:
+        v (numpy matrix): <see get_norm2()>
+
+    Returns:
+        float: ||v||
+    """
     return np.sqrt(get_norm2(v))
 ####
 
 # discrete version of the eigenstate of the continuum manifold (already normalized)
 def get_DJT_column(DJT, j, m, mu, q):
+    """Column of the DJT matrix corresponding to the su(2) irrep (j, m, \mu)
+
+    Args:
+        DJT (_type_): _description_
+        j (float): half integer j<=q
+        m (float): half integer between -j and j
+        mu (float): half integer between -j and j
+        q (float): maximum value of j defining the DJT
+
+    Returns:
+        numpy matrix: DJT^i_{j,m,\mu}, i=1,\ldots,N_\alpha  
+    """
     idx = su2_irrep_to_index(j=j, mL=m, mR=mu, q=q)
     v = DJT[:, idx]
     return v

@@ -12,8 +12,8 @@ def check_su2_irrep(j, mL, mR):
     ####
 ####
 
-# (j, mL, mR) from the checkerboard index of the irrep with truncation q in j
 def su2_index_to_irrep(k, q):
+    """ (j, mL, mR) from the checkerboard index of the irrep with truncation q in j """
     i = 0
     for j1 in [q - j_i/2 for j_i in range(0, int(2*q) + 1)]:
         deg_j1 = int(2*j1) + 1 # degeneracy of the left and right quantum numbers
@@ -31,11 +31,13 @@ def su2_index_to_irrep(k, q):
     raise LookupError(err_mess)
 ####
 
-# checkerboard index of the irrep, going from 0,...,N_q-1
-# Each block of given "j" has size equal to get_N_q(j)
-# Inside each block, mL and mR are the row and column index of a table of size (2*j + 1)
-# Out convention is that we order the irreps from the highest to the lowest
 def su2_irrep_to_index(j, mL, mR, q):
+    """
+    checkerboard index of the irrep, going from 0,...,N_q-1
+    Each block of given "j" has size equal to get_N_q(j)
+    Inside each block, mL and mR are the row and column index of a table of size (2*j + 1)
+    Out convention is that we order the irreps from the highest to the lowest
+    """
     check_su2_irrep(j, mL, mR)
     N_q = partition.get_N_q(q)
     k0 = partition.get_N_q(j)
@@ -45,8 +47,8 @@ def su2_irrep_to_index(j, mL, mR, q):
     return int(i0+i1)
 ####
 
-# i = i_theta*N_phi*N_psi + i_phi*N_psi + i_psi
 def S3_point_to_angles_index(i, q):
+    """ i = i_theta*N_phi*N_psi + i_phi*N_psi + i_psi """
     N_phi =   partition.get_N_phi(q)
     N_psi =   partition.get_N_psi(q)
     i_theta = int(i/(N_phi*N_psi))
@@ -58,6 +60,7 @@ def S3_point_to_angles_index(i, q):
 ####
 
 def S3_point_to_angles_value(i, q):
+    """ angles \vec{\alpha} corresponding to the indices obtained with S3_point_to_angles_index() """
     N_theta = partition.get_N_theta(q)
     N_phi = partition.get_N_phi(q)
     N_psi = partition.get_N_psi(q)
@@ -66,8 +69,8 @@ def S3_point_to_angles_value(i, q):
 ####
 
 
-# i = i_theta*N_phi*N_psi + i_psi*N_phi + i_phi
 def angles_to_S3_point_index(i_theta, i_phi, i_psi, q):
+    """ i = i_theta*N_phi*N_psi + i_psi*N_phi + i_phi """
     N_phi =   partition.get_N_phi(q)
     N_psi =   partition.get_N_psi(q)
     i = i_theta*N_phi*N_psi + i_phi*N_psi + i_psi

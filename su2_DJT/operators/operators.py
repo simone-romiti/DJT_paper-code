@@ -1,9 +1,12 @@
-# DJT could be in principle computed for each La, but it takes time when q increases
+"""
+Operators wrappers
+
+Note: DJT could be in principle computed for each La, but it takes time when q increases
+"""
+
 
 import numpy as np
 import sympy as sp
-#from sympy.physics.quantum.spin import WignerD
-
 
 import su2_DJT.operators.electric_basis as eb
 import su2_DJT.S3_sphere.partition as partition
@@ -24,39 +27,70 @@ tau_squared = tau[1]*tau[1] + tau[2]*tau[2] + tau[3]*tau[3]
 # V* \hat{L}_a * V^{-1}, where the \hat{L}_a are the momenta in the electric basis
 # V should be the DJT, and V^{-1} is DJT^{\dagger}
 def get_La(a, q, V: np.matrix, V_inv: np.matrix):
+    """
+    V* \hat{L}_a * V^{-1}, where the \hat{L}_a are the momenta in the electric basis
+    V is the DJT, and V^{-1} is DJT^{\dagger}
+
+    Args:
+        a (int): index of canonical momentum
+        q (float): j<=q
+        V (np.matrix): DJT matrix
+        V_inv (np.matrix): DJT^\dagger
+
+    Returns:
+        np.matrix: representation of the L_a in the magnetic basis
+    """
     La_eb = eb.get_La(a=a, q=q)
     La = V * La_eb * V_inv
     return La
 ####
 
-# \sum_a L_a*L_a. Same logic as for get_La()
 def get_Lsquared(q, V: np.matrix, V_inv: np.matrix):
+    """ \sum_a L_a*L_a. Same logic as for get_La() """
     Lsquared_eb = eb.get_Lsquared(q=q)
     Lsquared = V * Lsquared_eb * V_inv
     return Lsquared
     ####
 ####
 
-# V* \hat{R}_a * V^{-1}, where the \hat{R}_a are the momenta in the electric basis
-# V should be the DJT, and V^{-1} is DJT^{\dagger}
 def get_Ra(a, q, V: np.matrix, V_inv: np.matrix):
+    """
+    V* \hat{R}_a * V^{-1}, where the \hat{R}_a are the momenta in the electric basis
+    V is the DJT, and V^{-1} is DJT^{\dagger}
+
+    Args:
+        a (int): index of canonical momentum
+        q (float): j<=q
+        V (np.matrix): DJT matrix
+        V_inv (np.matrix): DJT^\dagger
+
+    Returns:
+        np.matrix: representation of the R_a in the magnetic basis
+    """
     Ra_eb = eb.get_Ra(a=a, q=q)
     Ra = V * Ra_eb * V_inv
     return Ra
 ####
 
-# \sum_a R_a*R_a. Same logic as for get_Ra()
 def get_Rsquared(q, V: np.matrix, V_inv: np.matrix):
+    """ \sum_a R_a*R_a. Same logic as for get_Ra() """
     Rsquared_eb = eb.get_Rsquared(q=q)
     Rsquared = V * Rsquared_eb * V_inv
     return Rsquared
     ####
 ####
 
-# operator U in the diagonal basis.
-# It has both color and Hilbert space indices,
-# so we return a list of list corresponding to its matrix elements in color space
 def get_U(q):
+    """
+    operator U in the diagonal basis (i.e. magnetic basis).
+    It has both color and Hilbert space indices,
+
+    Args:
+        q (float): maximum value of j defining N_\alpha involved in the DJT construction
+
+    Returns:
+        list of list : each element corresponds a pair of indices in color space
+    """
     N_theta = partition.get_N_theta(q)
     N_phi = partition.get_N_phi(q)
     N_psi = partition.get_N_psi(q)
@@ -79,25 +113,28 @@ def get_U(q):
     return [[U_11, U_12], [U_21, U_22]]
 ####
 
-# element (a,b) in color space,
-# which is a matrix of size N_alpha x N_alpha
 def get_U_ab(U, a, b):
+    """ Element (a,b) of the operator U, in color space.
+        Note: for each pair (a,b) we get a matrix of size N_alpha x N_alpha
+    """
     return U[a][b]
 ####
 
 
-# returns U^{\dagger} in the representation of get_U()
 def get_Udag(U):
+    """ returns U^{\dagger} in the representation of get_U() """
     # [b][a] and not [a][b] because the dagger acts also on the color space
     Udag = [[(U[b][a]).getH() for b in range(N_c)] for a in range(N_c)]
     return Udag
 ####
 
 
-# multiplication of 2 links in color space
-# if properly tensor product with the identity,
-# this function can be used also for links defined at different points
 def color_prod_links(U, V):
+    """
+    multiplication of 2 links in color space
+    if properly tensor product with the identity,
+    this function can be used also for links defined at different points
+    """
     U_prod = [[None, None], [None, None]]
     N = (U[0][0].shape)[0]
     for a in range(N_c):

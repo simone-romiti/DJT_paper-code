@@ -1,4 +1,4 @@
-# Polynomial partitioning of the sphere
+""" Polynomial partitioning of the sphere """
 
 import numpy as np
 import sympy as sp
@@ -16,10 +16,10 @@ def check_truncation(q):
     ####
 ####
 
-# \sum_{j=0}^{q} \sum_{m, \mu = -j}^{j}  (2j +  1)^2
 def get_N_q(q):
+    """ \sum_{j=0}^{q} \sum_{m, \mu = -j}^{j}  (2j +  1)^2 """
     check_truncation(q)
-    N_q = (4*q + 3)*(2*q + 2)*(2*q + 1) # is a multiple of 6
+    N_q = (4*q + 3)*(2*q + 2)*(2*q + 1) # is always a multiple of 6
     N_q = int(N_q/6)
     return N_q
 ####
@@ -50,31 +50,31 @@ def get_N_alpha(q):
 ####
 
 
-# infinitesimal increment in theta when q \to \infty
 def get_asympt_dtheta(q):
+    """ infinitesimal increment in theta when q \to \infty """
     return np.pi/get_N_theta(q=q)
 ####
 
-# increment in phi
 def get_dphi(q):
+    """ increment in phi """
     return 4*np.pi/get_N_phi(q=q)
 ####
 
-# increment in psi
 def get_dpsi(q):
+    """ increment in psi """
     return 4*np.pi/get_N_psi(q=q)
 ####
 
-# measure of the infinitesimal increment for q \to \infty
 def get_asympt_d3alpha(q):
+    """ measure of the infinitesimal increment for q \to \infty """
     dtheta = get_asympt_dtheta(q)
     dphi = get_dphi(q)
     dpsi = get_dpsi(q)
     return dtheta*dphi*dpsi
 ####
 
-# roots of the n-th Legendre polynomial: P_n(x)
 def get_Legende_roots_x(n):
+    """ roots of the n-th Legendre polynomial: P_n(x) """
     # Calculate the coefficients of the n-th Legendre polynomial
     coeffs = np.zeros(n + 1)
     coeffs[n] = 1
@@ -86,8 +86,8 @@ def get_Legende_roots_x(n):
     return roots
 ####
 
-# roots of the n-th Legendre polynomial P_n(x = \cos(theta))
 def get_Legendre_roots_theta(n):
+    """ roots of the n-th Legendre polynomial P_n(x = \cos(theta)) """
     roots = get_Legende_roots_x(n)
     return np.arccos(roots)
 ####
@@ -105,14 +105,16 @@ def get_psi(N_psi):
     return np.array([(4*np.pi/N_psi)*i for i in range(N_psi)])
 ####
 
-# inner product of 2 functions with weight function w(x)=1
-# "x" is the symbol used in the symbolic expression of f1(x) and f2(x)
 def get_inner_prod(x, f1, f2, a, b):
+    """
+    inner product of 2 functions with weight function w(x)=1
+    "x" is the symbol used in the symbolic expression of f1(x) and f2(x)
+    """ 
     I = sp.Integral(f1*f2, (x, a, b))
     return I.doit()
 
-# Gaussian weights of order N
 def get_ws(N):
+    """ Gaussian weights of order N """
     x = get_Legende_roots_x(N)
     w = [sp.symbols("w_{"+"{i}".format(i=i)+"}") for i in range(1, N+1)]
     LHS = sp.zeros(N+1, 1)
@@ -134,8 +136,8 @@ def get_ws(N):
     return list(coefficients)
 ##
 
-# returns yi of eq. (5) of https://arxiv.org/pdf/2304.02322.pdf from the angles
 def get_yi(alpha):
+    """ returns yi of eq. (5) of https://arxiv.org/pdf/2304.02322.pdf from the angles """
     theta, phi, psi = alpha
     y0 = + np.cos(theta/2) * np.cos((phi+psi)/2)
     y1 = - np.cos(theta/2) * np.sin((phi+psi)/2)
