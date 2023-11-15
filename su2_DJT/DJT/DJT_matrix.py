@@ -100,9 +100,9 @@ def get_norm(v):
     return np.sqrt(get_norm2(v))
 ####
 
-# discrete version of the eigenstate of the continuum manifold (already normalized)
 def get_DJT_column(DJT, j, m, mu, q):
     """Column of the DJT matrix corresponding to the su(2) irrep (j, m, \mu)
+    Physically this is a discrete version of the eigenstate of the continuum manifold (already normalized)
 
     Args:
         DJT (_type_): _description_
@@ -117,5 +117,25 @@ def get_DJT_column(DJT, j, m, mu, q):
     idx = su2_irrep_to_index(j=j, mL=m, mR=mu, q=q)
     v = DJT[:, idx]
     return v
+####
+
+def get_1mP_garbage_space(DJT, q):
+    """ projector (1-P), where P projects to the garbage space with j>q """
+    N_alpha = partition.get_N_alpha(q)
+    N_q = partition.get_N_q(q)
+    P = np.matrix(np.zeros(shape=(N_alpha, N_alpha), dtype=complex))
+    for i in range(N_q):
+        j, mL, mR = su2_index_to_irrep(i, q=q)
+        vj = get_DJT_column(DJT=DJT, j=j, m=mL, mu=mR, q=q)
+        P += vj*(vj.getH())
+    ####
+    return P
+####
+
+def get_P_garbage_space(DJT, q):
+    """ projector P to the garbage space with j>q """
+    N_alpha = partition.get_N_alpha(q)
+    Id = np.matrix(np.eye(N_alpha))
+    return Id - get_1mP_garbage_space(DJT, q)
 ####
 
