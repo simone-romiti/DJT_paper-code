@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 plt.rcParams.update({
     "text.usetex": True,
     "font.family": "Helvetica",
-    "font.size": 16
+    "font.size": 18
 })
 
 import sys
@@ -38,7 +38,7 @@ plt.scatter(
     [i for i in range(len(Lsqr_eigs))], Lsqr_eigs, 
     linestyle="None", marker="x", s=20)
 plt.xlabel('$i$')
-plt.ylabel('$\lambda$')
+plt.ylabel('$\lambda_i$')
 #plt.title('Eigenvalues of $\sum_a L_a L_a$')
 plt.grid(True, linestyle="dashed")
 plt.tight_layout()
@@ -63,7 +63,7 @@ for a in range(3):
         label = "$L_"+str(a+1)+"$")
 ####
 plt.xlabel('$i$')
-plt.ylabel('$\lambda$')
+plt.ylabel('$\lambda_i$')
 #plt.title('Eigenvalues of $\sum_a L_a L_a$')
 plt.grid(True, linestyle="dashed")
 plt.legend()
